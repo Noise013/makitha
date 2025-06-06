@@ -18,6 +18,7 @@ class Movimiento extends Model
         'g_and_a',
         'corporativo',
         'importe',
+        'evento',
     ];
 
 }

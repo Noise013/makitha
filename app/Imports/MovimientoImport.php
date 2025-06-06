@@ -12,6 +12,13 @@ HeadingRowFormatter::default('none');
 
 class MovimientoImport implements ToModel, WithHeadingRow
 {
+    protected $eventoId;
+
+    public function __construct($eventoId)
+    {
+        $this->eventoId = $eventoId;
+    }
+    
     public function model(array $row)
     {
         
@@ -23,6 +30,7 @@ class MovimientoImport implements ToModel, WithHeadingRow
             'g_and_a'       => $row['G&A'] ?? null,
             'corporativo'   => $row['CORPORATIVO'] ?? null,
             'importe'       => $row['Importe'],
+            'evento'        => $this->eventoId,
         ]);
     }
 }
