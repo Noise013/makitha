@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
 {
     Schema::create('eventos', function (Blueprint $table) {
-        $table->string('id')->primary(); // será el hash
+        $table->string('id')->primary(); // es el hash
         $table->timestamps();
     });
 }

@@ -15,14 +15,21 @@ class MovimientoController extends Controller
     {
         $request->validate([
             'archivo_excel' => 'required|file|mimes:xlsx,xls,csv',
+            'evento_id' => 'required|exists:eventos,id',
         ]);
-        $eventoId = (string) Str::random(16); //hash
+        $eventoId = $request->input('evento_id');
 
-        //registro en la tabla eventos
-        Evento::create(['id' => $eventoId]);
+       
 
          Excel::import(new MovimientoImport($eventoId), $request->file('archivo_excel'));
 
         return redirect()->back()->with('success', 'Archivo importado correctamente');
     }
+   public function mostrarForm($evento)
+   {
+      return view('importar', ['evento' => $evento]);
+    }
+
+
+
 }
