@@ -14,6 +14,18 @@
                     @csrf
                     <button type="submit">Crear nuevo reporte</button>
                 </form>
+                <h2 class="text-lg font-semibold mb-4">Historial de eventos</h2>
+                <ul class="space-y-2">
+                    @forelse($eventos as $evento)
+                        <li class="border p-4 rounded hover:bg-gray-50">
+                            <a href="{{ url('/evento?id=' . $evento->id) }}" class="text-blue-600 hover:underline">
+                                {{ $evento->nombre_archivo ?? 'Sin nombre' }} — {{ $evento->created_at->format('Y-m-d H:i') }}
+                            </a>
+                        </li>
+                    @empty
+                        <li class="text-gray-500">No hay eventos aún.</li>
+                    @endforelse
+                </ul>
                 </div>
             </div>
         </div>

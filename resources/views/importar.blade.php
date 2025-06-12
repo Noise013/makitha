@@ -26,6 +26,10 @@
 
                         <input type="hidden" name="evento_id" value="{{ $evento }}">
 
+                        <label for="nombre_archivo">Nombre del archivo:</label>
+                        <input type="text" name="nombre_archivo" id="nombre_archivo" required>
+
+
                         <input type="file" name="archivo_excel" required>
                         <button type="submit">Importar</button>
                     </form>
