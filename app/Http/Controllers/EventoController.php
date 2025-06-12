@@ -14,6 +14,7 @@ class EventoController extends Controller
     {
         return view('crear');
     }
+    
 
     public function guardar()
     {

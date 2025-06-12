@@ -3,15 +3,17 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\DashboardController;
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,6 +29,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/eventos/crear', [EventoController::class, 'crear'])->name('eventos.crear');
     Route::post('/eventos/guardar', [EventoController::class, 'guardar'])->name('eventos.guardar');
+    Route::get('/eventos/nuevo', [EventoController::class, 'crear'])->name('eventos.nuevo');
 });
 
 require __DIR__.'/auth.php';

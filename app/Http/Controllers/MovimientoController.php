@@ -23,7 +23,7 @@ class MovimientoController extends Controller
 
          Excel::import(new MovimientoImport($eventoId), $request->file('archivo_excel'));
 
-        return redirect()->back()->with('success', 'Archivo importado correctamente');
+         return redirect()->route('eventos.crear')->with('success', 'Archivo importado correctamente');
     }
    public function mostrarForm($evento)
    {

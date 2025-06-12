@@ -1,0 +1,33 @@
+.general-info {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+.general-info .slot-info h1 span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #e5eaee;
+    position: relative;
+    top: -10px;
+}
+.general-info .slot-info h1 {
+    font-size: 36px;
+    font-weight: 600;
+}
+.arrow-tooltip {
+    position: absolute;
+    bottom: -5px !important;
+    top: auto !important;
+}
+.clientes-list td{
+    text-transform: uppercase;
+}
+.clientes-list {
+    height: auto;
+}
+.clientes-body {
+    height: 100%;
+}
