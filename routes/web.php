@@ -33,6 +33,13 @@ Route::middleware('auth')->group(function () {
     Route::get('/eventos/nuevo', [EventoController::class, 'crear'])->name('eventos.nuevo');
     Route::get('/evento', [EventoController::class, 'ver'])->name('evento.ver');
 
+    Route::get('/tablero', function () {
+        return view('tablero');
+    })->name('tablero');
+
+
+
+
 });
 
 require __DIR__.'/auth.php';

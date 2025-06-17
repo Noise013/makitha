@@ -29,9 +29,14 @@
                         <label for="nombre_archivo">Nombre del archivo:</label>
                         <input type="text" name="nombre_archivo" id="nombre_archivo" required>
 
+                        <label for="mes">Mes:</label>
+                        <input type="text" name="mes" required>
+
+                        <label for="proyeccion">Proyección:</label>
+                        <input type="number" step="0.01" name="proyeccion" required>
 
                         <input type="file" name="archivo_excel" required>
-                        <button type="submit">Importar</button>
+                        <button type="submit">Guardar</button>
                     </form>
                 </div>
             </div>
