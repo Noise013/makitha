@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('proyecciones', function (Blueprint $table) {
         $table->id(); // idProyeccion
         $table->string('mes');
-        $table->decimal('proyeccion', 15, 2);
-        $table->string('evento_id'); // el id del evento
+        $table->decimal('proyeccion', 15, 2); 
+        $table->string('evento_id'); // idEvento
         $table->timestamps();
 
         $table->foreign('evento_id')->references('id')->on('eventos')->onDelete('cascade');
-        });
+    });
     }
 
     /**

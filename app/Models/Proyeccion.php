@@ -2,15 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Proyeccion extends Model
 {
+    use HasFactory;
     protected $table = 'proyecciones';
 
     protected $fillable = [
+        'evento_id',
         'mes',
         'proyeccion',
-        'evento_id',
     ];
+
+    public function evento()
+    {
+        return $this->belongsTo(Evento::class);
+    }
 }

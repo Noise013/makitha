@@ -26,16 +26,29 @@
 
                         <input type="hidden" name="evento_id" value="{{ $evento }}">
 
+                        <h3>Ingresa tu archivo</h3>
+
+                        <label for="archivo_excel">Archivo Excel:</label>
+                        <input type="file" name="archivo_excel" required>
+
                         <label for="nombre_archivo">Nombre del archivo:</label>
                         <input type="text" name="nombre_archivo" id="nombre_archivo" required>
 
-                        <label for="mes">Mes:</label>
-                        <input type="text" name="mes" required>
+                        <h3>Proyección</h3>
 
-                        <label for="proyeccion">Proyección:</label>
-                        <input type="number" step="0.01" name="proyeccion" required>
+                        @php
+                            $meses = [
+                                'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+                                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+                            ];
+                        @endphp
 
-                        <input type="file" name="archivo_excel" required>
+                        @foreach($meses as $mes)
+                            <label for="proyeccion_{{ $mes }}">{{ ucfirst($mes) }}:</label>
+                            <input type="number" name="proyeccion[{{ $mes }}]" step="0.01" required>
+                        @endforeach
+
+                        <br><br>
                         <button type="submit">Guardar</button>
                     </form>
                 </div>
