@@ -1,10 +1,24 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
-        </h2>
-    </x-slot>
+        <div class="flex justify-between items-center">
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+                {{ __('Dashboard') }}
+            </h2>
 
+            <div class="filtroByYear">
+                <form method="GET" action="{{ route('dashboard') }}" class="mb-0">
+                    <label for="year" class="mr-2 text-sm font-medium text-gray-700">Filtrar por año:</label>
+                    <select name="year" id="year" class="yearFilter border rounded px-2 py-1" onchange="this.form.submit()">
+                        <option value="all" {{ $year === 'all' || !$year ? 'selected' : '' }}>Todos</option>
+                        @foreach ($aniosDisponibles as $año)
+                            <option value="{{ $año }}" {{ $year == $año ? 'selected' : '' }}>{{ $año }}</option>
+                        @endforeach
+                    </select>
+                </form> 
+            </div>
+        </div>
+    </x-slot>
+    
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg">
@@ -13,12 +27,14 @@
                         <div class="slot-info">
                             <h2 class="font-semibold text-xl text-gray-800 leading-tight flex items-center gap-2 relative">
                                 Ingresos totales
-                                <div class="relative group cursor-pointer">
-                                    <span class="text-white bg-gray-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">?</span>
-                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 bg-white text-gray-700 text-sm p-3 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                        El total de ingresos representa la sumatoria de todas las facturas ingresadas en todos los archivos subidos desde el inicio de los tiempos.
-                                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 arrow-tooltip"></div>
-                                    </div>
+                                <div class="relative cursor-pointer">
+                                    <span class="group text-white bg-gray-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                                        ?
+                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 bg-white text-gray-700 text-sm p-3 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                                            El total de ingresos representa la sumatoria de todas las facturas ingresadas en todos los archivos subidos desde el inicio del año fiscal seleccionado o la sumatoria total de todos los años registrados.
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 arrow-tooltip"></div>
+                                        </div>
+                                    </span>
                                 </div>
                             </h2>
                             <h1>
@@ -29,12 +45,14 @@
                         <div class="slot-info">
                             <h2 class="font-semibold text-xl text-gray-800 leading-tight flex items-center gap-2">
                                 Facturas ingresadas
-                                <div class="relative group cursor-pointer">
-                                    <span class="text-white bg-gray-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">?</span>
-                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 bg-white text-gray-700 text-sm p-3 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                        El total de las facturas ingresadas representa la sumatoria de todas las facturas ingresadas en todos los archivos desde el inicio de los tiempos.
-                                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 arrow-tooltip"></div>
-                                    </div>
+                                <div class="relative cursor-pointer">
+                                    <span class="group text-white bg-gray-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                                        ?
+                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 bg-white text-gray-700 text-sm p-3 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                                            El total de las facturas ingresadas representa la sumatoria de todas las facturas ingresadas desde el inicio del año fiscal seleccionado o la sumatoria total de todos los años registrados.
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 arrow-tooltip"></div>
+                                        </div>
+                                    </span>
                                 </div>
                             </h2>
                             <h1>{{ number_format($totalFilas) }}</h1>
@@ -42,12 +60,14 @@
                         <div class="slot-info">
                             <h2 class="font-semibold text-xl text-gray-800 leading-tight flex items-center gap-2">
                                 Clientes
-                                <div class="relative group cursor-pointer">
-                                    <span class="text-white bg-gray-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">?</span>
-                                    <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 bg-white text-gray-700 text-sm p-3 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                                        El total de los clientes se calcula según los registros de todos los archivos ingresados desde el inicio de los tiempos.
-                                        <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 arrow-tooltip"></div>
-                                    </div>
+                                <div class="relative cursor-pointer">
+                                    <span class="group text-white bg-gray-600 rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                                        ?
+                                        <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-72 bg-white text-gray-700 text-sm p-3 rounded-md shadow-md opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none">
+                                            El total de los clientes se calcula según los registros de todos los archivos ingresados desde el inicio del año fiscal seleccionado o la sumatoria total de todos los años registrados.
+                                            <div class="absolute top-full left-1/2 -translate-x-1/2 w-3 h-3 bg-white rotate-45 arrow-tooltip"></div>
+                                        </div>
+                                    </span>
                                 </div>
                             </h2>
                             <h1>{{ count($clientesImportes) }}</h1>
@@ -65,6 +85,9 @@
                     <h1 class="font-semibold text-l text-gray-800 leading-tight">Ingreso mensual</h1>
                 </div>
                 <div class="p-6">
+                    <div class="p-6">
+                        <div id="chart" class="w-full"></div>
+                    </div>
                     <div id="chart" class="w-full"></div>
                 </div>
             </div>
@@ -121,7 +144,7 @@
                 curve: 'smooth',
             },
             dataLabels: {
-            enabled: false
+                enabled: false
             },
             xaxis: {
                 categories: @json($meses),
@@ -131,10 +154,7 @@
                     show: false
                 }
             },
-            series: [{
-                name: "Ingresos mensuales",
-                data: @json($importes)
-            }],
+            series: @json($importes), // ← quitada la coma extra
             tooltip: {
                 y: {
                     formatter: function (value) {
