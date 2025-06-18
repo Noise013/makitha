@@ -16,7 +16,7 @@ class MovimientoController extends Controller
     {
         $request->validate([
             'archivo_excel' => 'required|file|mimes:xlsx,xls,csv',
-            'evento_id' => 'required|exists:eventos,id',
+            'evento_id' => 'required|string', // ya no 'exists:eventos,id'
             'nombre_archivo' => 'required|string|max:255',
             'proyeccion' => 'required|array',
             'proyeccion.*' => 'required|numeric',
@@ -24,11 +24,16 @@ class MovimientoController extends Controller
 
         $eventoId = $request->input('evento_id');
 
+       
         $evento = Evento::find($eventoId);
+        if (!$evento) {
+            $evento = Evento::create(['id' => $eventoId]);
+        }
+
         $evento->nombre_archivo = $request->input('nombre_archivo');
         $evento->save();
 
-        //importa movimientos desde el excel
+        
         Excel::import(new MovimientoImport($eventoId), $request->file('archivo_excel'));
 
         foreach ($request->input('proyeccion') as $mes => $valor) {
@@ -41,8 +46,8 @@ class MovimientoController extends Controller
 
         return redirect()->route('eventos.crear')->with('success', 'Archivo importado correctamente');
     }
-   public function mostrarForm($evento)
-   {
+    public function mostrarForm($evento)
+    {
       return view('importar', ['evento' => $evento]);
     }
 

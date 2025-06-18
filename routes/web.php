@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\EventoController;
 use App\Http\Controllers\MovimientoController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TableroController;
 
 use Illuminate\Support\Facades\Route;
 
@@ -37,6 +38,8 @@ Route::middleware('auth')->group(function () {
         return view('tablero');
     })->name('tablero');
 
+    Route::get('/tableros/crear', [TableroController::class, 'crear'])->name('tableros.crear');
+    Route::post('/tableros/guardar', [TableroController::class, 'guardar'])->name('tableros.guardar');
 
 
 
