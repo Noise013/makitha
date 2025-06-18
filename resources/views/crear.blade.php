@@ -2,7 +2,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Eventos') }}
+            {{ __('Reportes') }}
         </h2>
     </x-slot>
 
@@ -11,7 +11,7 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     <div class="flex items-center justify-between mb-4">
-                        <h2 class="text-lg font-semibold">Historial de eventos</h2>
+                        <h2 class="text-lg font-semibold">Historial de reportes</h2>
                         
                         <form action="{{ route('eventos.guardar') }}" method="POST">
                             @csrf
@@ -22,11 +22,12 @@
                         @forelse($eventos as $evento)
                             <li class="border p-4 rounded hover:bg-gray-50 listRep">
                                 <a href="{{ url('/evento?id=' . $evento->id) }}" class="text-blue-600 hover:underline">
-                                    {{ $evento->nombre_archivo ?? 'Sin nombre' }} — {{ $evento->created_at->format('Y-m-d H:i') }}
+                                    {{ $evento->nombre_archivo ?? 'Sin nombre' }} 
+                                    <span class="fechaReporte">Creado el {{ $evento->created_at->format('d-m-Y') }}</span>
                                 </a>
                             </li>
                         @empty
-                            <li class="text-gray-500">No hay eventos aún.</li>
+                            <li class="text-gray-500">No hay reportes aún.</li>
                         @endforelse
                     </ul>
                 </div>
