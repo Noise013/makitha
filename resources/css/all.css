@@ -31,3 +31,62 @@
 .clientes-body {
     height: 100%;
 }
+.btnPrimary {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-weight: 600;
+    color: #fff;
+    background: #1f2938;
+    padding: 10px 20px;
+    border-radius: 5px;
+}
+.listRep{
+    cursor: pointer;
+}
+.listRep a {
+    color: #1f2938;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+.yearFilter {
+    width: 110px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.titleResumenReporte {
+    width: 210px;
+    text-align: center;
+    padding: 10px;
+    background: #1f2938;
+    color: #fff;
+    font-weight: 600;
+    letter-spacing: 0.1rem;
+    margin: 30px 0 20px;
+}
+.headTable {
+    background: #0070c0;
+    border: none;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 100;
+}
+.contentTable{
+    border: none;
+    color: #1f2938;
+    font-size: 12px;
+    font-weight: 100;
+    text-align: center;
+}
+.contentTableTitle{
+    border: none;
+    color: #1f2938;
+    font-size: 12px;
+    font-weight: 100;
+    text-align: center;
+}
+.fechaReporte {
+    font-size: 10px;
+    color: #a9a9a9;
+}
+

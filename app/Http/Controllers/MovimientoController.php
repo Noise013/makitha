@@ -24,7 +24,7 @@ class MovimientoController extends Controller
 
         $eventoId = $request->input('evento_id');
 
-       
+       //tengo que revisar que estoy haciendo mal
         $evento = Evento::find($eventoId);
         if (!$evento) {
             $evento = Evento::create(['id' => $eventoId]);
