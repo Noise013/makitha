@@ -34,12 +34,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/eventos/nuevo', [EventoController::class, 'crear'])->name('eventos.nuevo');
     Route::get('/evento', [EventoController::class, 'ver'])->name('evento.ver');
 
-    Route::get('/tablero', function () {
+    /*Route::get('/tablero', function () {
         return view('tablero');
-    })->name('tablero');
+    })->name('tablero');*/
 
     Route::get('/tableros/crear', [TableroController::class, 'crear'])->name('tableros.crear');
     Route::post('/tableros/guardar', [TableroController::class, 'guardar'])->name('tableros.guardar');
+    Route::get('/tablero/crearDatos/{id}', [TableroController::class, 'datos'])->name('tableros.datos');
+    Route::post('/tableros/guardarDatos/{id}', [TableroController::class, 'guardarDatos'])->name('tableros.guardarDatos');
+    Route::get('/tablero', [TableroController::class, 'index'])->name('tablero');
+
+
+
 
 
 

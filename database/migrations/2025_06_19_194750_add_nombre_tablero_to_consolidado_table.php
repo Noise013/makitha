@@ -10,20 +10,19 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::create('eventos', function (Blueprint $table) {
-        $table->string('id')->primary(); // es el hash
-        $table->timestamps();
-       
-       
-    });
-}
+    {
+        Schema::table('consolidado', function (Blueprint $table) {
+            $table->string('nombre_tablero')->nullable()->after('tablero_id');
+        });
+    }
 
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::dropIfExists('eventos');
+        Schema::table('consolidado', function (Blueprint $table) {
+            $table->dropColumn('nombre_tablero');
+        });
     }
 };
