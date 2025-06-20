@@ -19,7 +19,7 @@
                     <ul class="space-y-2">
                         @forelse($tableros as $tablero)
                             <li class="border p-4 rounded hover:bg-gray-50 listRep">
-                                <a href="{{ route('tableros.datos', ['id' => $tablero->id]) }}" class="text-blue-600 hover:underline">
+                                <a href="{{ route('tableros.detalle', ['id' => $tablero->id]) }}" class="text-blue-600 hover:underline">
                                     {{ $tablero->nombre_tablero ?? 'Sin nombre' }}
                                     <span class="fechaReporte">Creado el {{ $tablero->created_at->format('d-m-Y') }}</span>
                                 </a>
@@ -33,6 +33,3 @@
         </div>
     </div>
 </x-app-layout>
-
-
-
