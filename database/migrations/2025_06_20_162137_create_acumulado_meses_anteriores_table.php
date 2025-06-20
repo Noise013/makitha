@@ -6,24 +6,22 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tablero_totales', function (Blueprint $table) {
+        Schema::create('acumulado_meses_anteriores', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tablero_id')->constrained('tableros')->onDelete('cascade');
+            $table->unsignedBigInteger('tablero_id');
             $table->string('cliente');
             $table->decimal('total', 15, 2)->nullable();
             $table->timestamps();
+
+            $table->foreign('tablero_id')->references('id')->on('tableros')->onDelete('cascade');
         });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('tablero_totales');
+        Schema::dropIfExists('acumulado_meses_anteriores');
     }
-
-
 };
+

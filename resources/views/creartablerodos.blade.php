@@ -24,7 +24,11 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $cliente }}</td>
                                 <td class="border px-4 py-2">
-                                    <input type="number" name="totales[{{ $cliente }}]" step="0.01" class="w-full border rounded p-1" />
+                                    <input type="number" 
+                                           name="acumulado_mes_anterior[{{ $cliente }}][total]" 
+                                           step="0.01" 
+                                           class="w-full border rounded p-1"
+                                           value="{{ old('acumulado_mes_anterior.' . $cliente . '.total') }}" />
                                 </td>
                             </tr>
                         @endforeach
@@ -47,7 +51,11 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ number_format($reales[$cliente] ?? 0, 2) }}</td>
                                 <td class="border px-4 py-2">
-                                    <input type="number" name="plan[{{ $cliente }}]" step="0.01" class="w-full border rounded p-1" />
+                                    <input type="number" 
+                                           name="mes_dinamico[{{ $cliente }}][plan]" 
+                                           step="0.01" 
+                                           class="w-full border rounded p-1"
+                                           value="{{ old('mes_dinamico.' . $cliente . '.plan') }}" />
                                 </td>
                                 <td class="border px-4 py-2">—</td>
                                 <td class="border px-4 py-2">—</td>
@@ -70,7 +78,11 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $cliente }}</td>
                                 <td class="border px-4 py-2">
-                                    <input type="number" name="resultado_acumulado[{{ $cliente }}]" step="0.01" class="w-full border rounded p-1" />
+                                    <input type="number" 
+                                           name="acumulado_no_alcanzado[{{ $cliente }}][resultado]" 
+                                           step="0.01" 
+                                           class="w-full border rounded p-1"
+                                           value="{{ old('acumulado_no_alcanzado.' . $cliente . '.resultado') }}" />
                                 </td>
                             </tr>
                         @endforeach
@@ -92,16 +104,29 @@
                         @foreach ($clientes as $cliente)
                             <tr>
                                 <td class="border px-4 py-2">
-                                    <input type="text" name="acciones[{{ $cliente }}][servicio]" class="w-full border rounded p-1" />
+                                    <input type="text" 
+                                           name="acciones_a_tomar[{{ $cliente }}][servicio]" 
+                                           class="w-full border rounded p-1"
+                                           value="{{ old('acciones_a_tomar.' . $cliente . '.servicio') }}" />
                                 </td>
                                 <td class="border px-4 py-2">
-                                    <input type="text" name="acciones[{{ $cliente }}][propuesta]" class="w-full border rounded p-1" />
+                                    <input type="text" 
+                                           name="acciones_a_tomar[{{ $cliente }}][propuesta]" 
+                                           class="w-full border rounded p-1"
+                                           value="{{ old('acciones_a_tomar.' . $cliente . '.propuesta') }}" />
                                 </td>
                                 <td class="border px-4 py-2">
-                                    <input type="number" step="0.01" name="acciones[{{ $cliente }}][monto]" class="w-full border rounded p-1" />
+                                    <input type="number" 
+                                           step="0.01" 
+                                           name="acciones_a_tomar[{{ $cliente }}][monto]" 
+                                           class="w-full border rounded p-1"
+                                           value="{{ old('acciones_a_tomar.' . $cliente . '.monto') }}" />
                                 </td>
                                 <td class="border px-4 py-2">
-                                    <input type="date" name="acciones[{{ $cliente }}][fecha]" class="w-full border rounded p-1" />
+                                    <input type="date" 
+                                           name="acciones_a_tomar[{{ $cliente }}][fecha]" 
+                                           class="w-full border rounded p-1"
+                                           value="{{ old('acciones_a_tomar.' . $cliente . '.fecha') }}" />
                                 </td>
                             </tr>
                         @endforeach
@@ -110,13 +135,14 @@
 
                 {{-- Botón para guardar estos datos --}}
                 <div class="mt-6 text-right">
-                    <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-                        Crear Tablero
+                    <button type="submit" class="bg-blue-600 text-black px-4 py-2 rounded hover:bg-blue-700">
+                        Guardar datos
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </x-app-layout>
+
 
 

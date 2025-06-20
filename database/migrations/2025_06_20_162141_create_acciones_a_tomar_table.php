@@ -6,26 +6,24 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
-    public function up()
+    public function up(): void
     {
-        Schema::create('tablero_acciones', function (Blueprint $table) {
+        Schema::create('acciones_a_tomar', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tablero_id')->constrained('tableros')->onDelete('cascade');
+            $table->unsignedBigInteger('tablero_id');
             $table->string('cliente');
             $table->string('servicio')->nullable();
             $table->string('propuesta')->nullable();
             $table->decimal('monto', 15, 2)->nullable();
             $table->date('fecha')->nullable();
             $table->timestamps();
+
+            $table->foreign('tablero_id')->references('id')->on('tableros')->onDelete('cascade');
         });
     }
 
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('tablero_acciones');
+        Schema::dropIfExists('acciones_a_tomar');
     }
-
 };
