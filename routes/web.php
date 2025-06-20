@@ -43,6 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/tablero/crearDatos/{id}', [TableroController::class, 'datos'])->name('tableros.datos');
     Route::post('/tableros/guardarDatos/{id}', [TableroController::class, 'guardarDatos'])->name('tableros.guardarDatos');
     Route::get('/tablero', [TableroController::class, 'index'])->name('tablero');
+
     Route::get('/tablero/detalle', [TableroController::class, 'detalle'])->name('tableros.detalle');
 
 
