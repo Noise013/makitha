@@ -18,11 +18,20 @@
 
                     <ul class="space-y-2">
                         @forelse($tableros as $tablero)
-                            <li class="border p-4 rounded hover:bg-gray-50 listRep">
-                                <a href="{{ route('tableros.detalle', ['id' => $tablero->id]) }}" class="text-blue-600 hover:underline">
-                                    {{ $tablero->nombre_tablero ?? 'Sin nombre' }}
-                                    <span class="fechaReporte">Creado el {{ $tablero->created_at->format('d-m-Y') }}</span>
-                                </a>
+                            <li class="border p-4 rounded hover:bg-gray-50 listRep flex items-center justify-between">
+                                <div>
+                                    <a href="{{ route('tableros.detalle', ['id' => $tablero->id]) }}" class="text-blue-600 hover:underline">
+                                        {{ $tablero->nombre_tablero ?? 'Sin nombre' }}
+                                        <span class="fechaReporte">Creado el {{ $tablero->created_at->format('d-m-Y') }}</span>
+                                    </a>
+                                </div>
+                                <form action="{{ route('tableros.eliminar', $tablero->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este tablero?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-black text-sm px-3 py-1 rounded ml-4">
+                                        Eliminar
+                                    </button>
+                                </form>
                             </li>
                         @empty
                             <li class="text-gray-500">No hay tableros aún.</li>

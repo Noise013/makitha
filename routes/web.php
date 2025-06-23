@@ -33,6 +33,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/eventos/guardar', [EventoController::class, 'guardar'])->name('eventos.guardar');
     Route::get('/eventos/nuevo', [EventoController::class, 'crear'])->name('eventos.nuevo');
     Route::get('/evento', [EventoController::class, 'ver'])->name('evento.ver');
+    Route::delete('/eventos/{id}', [EventoController::class, 'eliminar'])->name('eventos.eliminar');
 
     /*Route::get('/tablero', function () {
         return view('tablero');
@@ -45,6 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/tablero', [TableroController::class, 'index'])->name('tablero');
 
     Route::get('/tablero/detalle', [TableroController::class, 'detalle'])->name('tableros.detalle');
+    Route::delete('/tableros/{id}', [TableroController::class, 'eliminar'])->name('tableros.eliminar');
+
 
 
 

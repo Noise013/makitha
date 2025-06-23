@@ -7,6 +7,12 @@ use Illuminate\Support\Str;
 use App\Models\Evento;
 use App\Models\Proyeccion;
 use App\Models\Movimiento;
+use App\Models\Consolidado;
+use App\Models\Tablero;
+use App\Models\AcumuladoMesAnterior;
+use App\Models\MesDinamico;
+use App\Models\AcumuladoNoAlcanzado;
+use App\Models\AccionATomar;
 
 class EventoController extends Controller
 {
@@ -123,4 +129,34 @@ class EventoController extends Controller
             'vsMeta'
         ));
     }
+
+    public function eliminar($id)
+    {
+        $evento = Evento::findOrFail($id);
+
+        // eliminar movimientos del evento
+        Movimiento::where('evento', $id)->delete();
+
+        // eliminar proyecciones del evento
+        Proyeccion::where('evento_id', $id)->delete();
+
+        // eliminar consolidados del evento
+        Consolidado::where('evento_id', $id)->delete();
+
+        // eliminar tableros asociados y datos
+        $tableros = Tablero::where('evento_id', $id)->get();
+        foreach ($tableros as $tablero) {
+            AcumuladoMesAnterior::where('tablero_id', $tablero->id)->delete();
+            MesDinamico::where('tablero_id', $tablero->id)->delete();
+            AcumuladoNoAlcanzado::where('tablero_id', $tablero->id)->delete();
+            AccionATomar::where('tablero_id', $tablero->id)->delete();
+            $tablero->delete();
+        }
+
+        // eliminar el evento
+        $evento->delete();
+
+        return redirect()->route('eventos.crear')->with('success', 'Reporte y los datos relacionados fueron eliminados correctamente.');
+    }
+
 }
