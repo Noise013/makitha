@@ -20,11 +20,20 @@
                     </div>
                     <ul class="space-y-2">
                         @forelse($eventos as $evento)
-                            <li class="border p-4 rounded hover:bg-gray-50 listRep">
-                                <a href="{{ url('/evento?id=' . $evento->id) }}" class="text-blue-600 hover:underline">
-                                    {{ $evento->nombre_archivo ?? 'Sin nombre' }} 
-                                    <span class="fechaReporte">Creado el {{ $evento->created_at->format('d-m-Y') }}</span>
-                                </a>
+                           <li class="border p-4 rounded hover:bg-gray-50 listRep flex items-center justify-between">
+                                <div>
+                                    <a href="{{ url('/evento?id=' . $evento->id) }}" class="text-blue-600 hover:underline">
+                                        {{ $evento->nombre_archivo ?? 'Sin nombre' }}
+                                        <span class="fechaReporte">Creado el {{ $evento->created_at->format('d-m-Y') }}</span>
+                                    </a>
+                                </div>
+                                <form action="{{ route('eventos.eliminar', $evento->id) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar este reporte?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-black text-sm px-3 py-1 rounded ml-4">
+                                        Eliminar
+                                    </button>
+                                </form>
                             </li>
                         @empty
                             <li class="text-gray-500">No hay reportes aún.</li>

@@ -29,7 +29,7 @@ class ConsolidadoImport implements OnEachRow, WithHeadingRow
         $dataOriginal = $row->toArray();
 
         // DEBUG para ver las columnas originales:
-         dd($dataOriginal);
+         //dd($dataOriginal);
 
         // Normaliza claves a minúsculas y sin espacios ni tildes
         $data = [];

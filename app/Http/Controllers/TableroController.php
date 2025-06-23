@@ -196,15 +196,38 @@ class TableroController extends Controller
         $acumuladoNoAlcanzado = AcumuladoNoAlcanzado::where('tablero_id', $id)->get();
         $accionesATomar = AccionATomar::where('tablero_id', $id)->get();
 
+         $ultimaFecha = Consolidado::where('tablero_id', $id)
+        ->orderByDesc('fecha')
+        ->value('fecha');
+
+        $ultimoMes = $ultimaFecha ? Carbon::parse($ultimaFecha)->translatedFormat('F Y') : 'Mes desconocido';
+
         return view('tablerodetalle', compact(
             'tablero',
             'clientes',
             'acumuladoMesAnterior',
             'mesDinamico',
             'acumuladoNoAlcanzado',
-            'accionesATomar'
+            'accionesATomar',
+            'ultimoMes'
         ));
     }
+
+    public function eliminar($id)
+    {
+        $tablero = \App\Models\Tablero::findOrFail($id); 
+
+        \App\Models\Consolidado::where('tablero_id', $id)->delete();
+        \App\Models\AcumuladoMesAnterior::where('tablero_id', $id)->delete();
+        \App\Models\MesDinamico::where('tablero_id', $id)->delete();
+        \App\Models\AcumuladoNoAlcanzado::where('tablero_id', $id)->delete();
+        \App\Models\AccionATomar::where('tablero_id', $id)->delete();
+
+        $tablero->delete(); // Elimina el tablero de la base de datos
+
+         return redirect()->route('tablero')->with('success', 'Tablero eliminado correctamente.');
+    }
+
 
 
 
