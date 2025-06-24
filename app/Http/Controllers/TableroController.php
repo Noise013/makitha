@@ -76,20 +76,24 @@ class TableroController extends Controller
         $ultimoMes = $ultimaFecha ? Carbon::parse($ultimaFecha)->translatedFormat('F Y') : 'Mes desconocido';
 
         // "Real" = sumatoria de importe por cliente donde cargar_a = 'FEE', agrupado correctamente espero
-        $consolidado = \App\Models\Consolidado::where('tablero_id', $id)
-            ->where('cargar_a', 'FEE')
-            ->get();
+        $reales = collect();
 
-        $reales = $consolidado->groupBy(function ($item) {
-            if (preg_match('/\-\s*(.+)/', $item->feat_business_tablero, $matches)) {
-                return trim($matches[1]);
-            }
-            return null;
-        })->map(function ($group) {
-            return $group->sum('importe');
-        });
+        foreach ($clientes as $cliente) {
+            $total = Consolidado::where('tablero_id', $id)
+                ->where('cargar_a', 'like', '%FEE%') // contiene la palabra FEE
+                ->get()
+                ->filter(function ($item) use ($cliente) {
+                    if (preg_match('/\-\s*(.+)/', $item->feat_business_tablero, $matches)) {
+                        return trim($matches[1]) === $cliente;
+                    }
+                    return false;
+                })
+                ->sum('importe_tablero');
 
-        $realesTotal = $consolidado->sum('importe');
+            $reales[$cliente] = $total ?: 0;
+        }
+
+        $realesTotal = $reales->sum();
 
         return view('creartablerodos', compact('tablero', 'clientes', 'ultimoMes', 'reales', 'realesTotal'));
     }
@@ -123,21 +127,16 @@ class TableroController extends Controller
 
         // Mes Dinámico
         foreach ($request->input('mes_dinamico', []) as $cliente => $data) {
-            $mesDinamico = MesDinamico::updateOrCreate(
+            $real = $data['real'] ?? 0;
+            $plan = $data['plan'] ?? null;
+
+            MesDinamico::updateOrCreate(
                 ['tablero_id' => $id, 'cliente' => $cliente],
-                ['plan' => $data['plan']]
+                [
+                    'real' => $data['real'] ?? 0,  
+                    'plan' => $data['plan']
+                ]
             );
-
-            // Luego se calcula y actualiza vs_plan y porcentaje (acá medio tiré fruta, pero bueno, no quería dejarlo vacío)
-             if ($mesDinamico->real !== null && $data['plan'] !== null) {
-                $vsPlan = $mesDinamico->real - $data['plan'];
-                $porcentaje = $data['plan'] != 0 ? ($vsPlan / $data['plan']) * 100 : null;
-
-                $mesDinamico->update([
-                    'vs_plan' => $vsPlan,
-                    'porcentaje' => $porcentaje,
-                ]);
-            }
         }
 
         // Acumulado No Alcanzado
@@ -191,27 +190,74 @@ class TableroController extends Controller
             ->unique()
             ->values();
 
-        $acumuladoMesAnterior = AcumuladoMesAnterior::where('tablero_id', $id)->get();
-        $mesDinamico = MesDinamico::where('tablero_id', $id)->get();
-        $acumuladoNoAlcanzado = AcumuladoNoAlcanzado::where('tablero_id', $id)->get();
-        $accionesATomar = AccionATomar::where('tablero_id', $id)->get();
+        // Calcula reales para cada cliente (como en datos())
+        $reales = collect();
+        foreach ($clientes as $cliente) {
+            $total = \App\Models\Consolidado::where('tablero_id', $id)
+                ->where('cargar_a', 'like', '%FEE%')
+                ->get()
+                ->filter(function ($item) use ($cliente) {
+                    if (preg_match('/\-\s*(.+)/', $item->feat_business_tablero, $matches)) {
+                        return trim($matches[1]) === $cliente;
+                    }
+                    return false;
+                })
+                ->sum('importe_tablero'); 
+            $reales[$cliente] = $total ?: 0;
+        }
 
-         $ultimaFecha = Consolidado::where('tablero_id', $id)
-        ->orderByDesc('fecha')
-        ->value('fecha');
+        $acumuladoMesAnterior = AcumuladoMesAnterior::where('tablero_id', $id)->get()->keyBy('cliente');
+        $mesDinamico = MesDinamico::where('tablero_id', $id)->get()->keyBy('cliente');
+        $acumuladoNoAlcanzado = AcumuladoNoAlcanzado::where('tablero_id', $id)->get()->keyBy('cliente');
+        $accionesATomar = AccionATomar::where('tablero_id', $id)->get()->keyBy('cliente');
+
+        $ultimaFecha = Consolidado::where('tablero_id', $id)
+            ->orderByDesc('fecha')
+            ->value('fecha');
 
         $ultimoMes = $ultimaFecha ? Carbon::parse($ultimaFecha)->translatedFormat('F Y') : 'Mes desconocido';
+
+        // array para mesDinamico con cálculos VS Plan y porcentaje
+        $mesDinamicoCalculado = [];
+
+        foreach ($clientes as $cliente) {
+            $plan = $mesDinamico[$cliente]->plan ?? null;
+            $real = $reales[$cliente] ?? 0;
+            $vsPlan = null;
+            $porcentaje = null;
+
+            if ($plan !== null) {
+                $vsPlan = $real - $plan;
+                if ($real == 0) {
+                    if ($plan > 0) {
+                        $porcentaje = -100;
+                    } else {
+                        $porcentaje = 0;
+                    }
+                } else {
+                    $porcentaje = ($vsPlan / $real) * 100;
+                }               
+            }
+
+            $mesDinamicoCalculado[$cliente] = (object)[
+                'plan' => $plan,
+                'real' => $real,
+                'vs_plan' => $vsPlan,
+                'porcentaje' => $porcentaje,
+            ];
+        }
 
         return view('tablerodetalle', compact(
             'tablero',
             'clientes',
             'acumuladoMesAnterior',
-            'mesDinamico',
+            'mesDinamicoCalculado',
             'acumuladoNoAlcanzado',
             'accionesATomar',
             'ultimoMes'
         ));
     }
+
 
     public function eliminar($id)
     {

@@ -46,12 +46,20 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($mesDinamico as $item)
+                    @foreach ($clientes as $cliente)
+                        @php
+                            $item = $mesDinamicoCalculado[$cliente] ?? (object)[
+                                'real' => 0,
+                                'plan' => 0,
+                                'vs_plan' => 0,
+                                'porcentaje' => 0,
+                            ];
+                        @endphp
                         <tr>
                             <td class="border px-4 py-2">{{ number_format($item->real, 2) }}</td>
-                            <td class="border px-4 py-2">{{ number_format($item->plan, 2) }}</td>
-                            <td class="border px-4 py-2">{{ number_format($item->vs_plan, 2) }}</td>
-                            <td class="border px-4 py-2">{{ number_format($item->porcentaje, 2) }}%</td>
+                            <td class="border px-4 py-2">{{ number_format($item->plan ?? 0, 2) }}</td>
+                            <td class="border px-4 py-2">{{ number_format($item->vs_plan ?? 0, 2) }}</td>
+                            <td class="border px-4 py-2">{{ number_format($item->porcentaje ?? 0, 2) }}%</td>
                         </tr>
                     @endforeach
                 </tbody>

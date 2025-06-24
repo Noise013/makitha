@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('consolidado', function (Blueprint $table) {
             $table->id();
             $table->date('fecha')->nullable();
-            $table->text('descripcion')->nullable();
-            $table->text('feat_business')->nullable();
+            $table->text('descripcion_tablero')->nullable();
+            $table->text('feat_business_tablero')->nullable();
             $table->text('cargar_a')->nullable();
-            $table->decimal('importe', 15, 2)->nullable();
+            $table->decimal('importe_tablero', 20, 2)->nullable();
             $table->unsignedBigInteger('tablero_id')->nullable();
             $table->string('evento_id')->nullable();
             $table->timestamps();

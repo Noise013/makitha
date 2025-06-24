@@ -13,9 +13,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tablero_id');
             $table->string('cliente');
             $table->decimal('real', 15, 2)->nullable();
-            $table->decimal('plan', 15, 2)->nullable();
-            $table->decimal('vs_plan', 15, 2)->nullable();
-            $table->decimal('porcentaje', 5, 2)->nullable();
+            $table->decimal('plan', 20, 2)->nullable();
             $table->timestamps();
 
             $table->foreign('tablero_id')->references('id')->on('tableros')->onDelete('cascade');

@@ -49,13 +49,18 @@
                     <tbody>
                         @foreach ($clientes as $cliente)
                             <tr>
-                                <td class="border px-4 py-2">{{ number_format($reales[$cliente] ?? 0, 2) }}</td>
+                                <td class="border px-4 py-2">
+                                    {{ number_format($reales[$cliente] ?? 0, 2) }}
+                                    <input type="hidden" 
+                                        name="mes_dinamico[{{ $cliente }}][real]" 
+                                        value="{{ $reales[$cliente] ?? 0 }}">
+                                </td>
                                 <td class="border px-4 py-2">
                                     <input type="number" 
-                                           name="mes_dinamico[{{ $cliente }}][plan]" 
-                                           step="0.01" 
-                                           class="w-full border rounded p-1"
-                                           value="{{ old('mes_dinamico.' . $cliente . '.plan') }}" />
+                                        name="mes_dinamico[{{ $cliente }}][plan]" 
+                                        step="0.01" 
+                                        class="w-full border rounded p-1"
+                                        value="{{ old('mes_dinamico.' . $cliente . '.plan') }}" />
                                 </td>
                                 <td class="border px-4 py-2">—</td>
                                 <td class="border px-4 py-2">—</td>

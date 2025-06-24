@@ -13,7 +13,5 @@ class MesDinamico extends Model
         'cliente',
         'real',
         'plan',
-        'vs_plan',
-        'porcentaje',
     ];
 }
