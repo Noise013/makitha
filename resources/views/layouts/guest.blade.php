@@ -1,4 +1,7 @@
 <!DOCTYPE html>
+@php
+    $timestamp = time();
+@endphp
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         <meta charset="utf-8">
@@ -12,7 +15,9 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <link rel="stylesheet" href="{{ Vite::asset('resources/css/app.css') }}?v={{ $timestamp }}">
+        <link rel="stylesheet" href="{{ Vite::asset('resources/css/all.css') }}?v={{ $timestamp }}">
+        <script type="module" src="{{ Vite::asset('resources/js/app.js') }}?v={{ $timestamp }}"></script>
     </head>
     <body class="font-sans text-gray-900 antialiased">
         <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100">
