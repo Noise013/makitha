@@ -12,10 +12,10 @@ class Consolidado extends Model
         'nombre_tablero',
         'evento_id',
         'fecha',
-        'descripcion',
-        'feat_business',
+        'descripcion_tablero',
+        'feat_business_tablero',
         'cargar_a',
-        'importe',
+        'importe_tablero',
         'tablero_id',
     ];
 

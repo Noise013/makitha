@@ -17,12 +17,15 @@ class ConsolidadoImport implements OnEachRow, WithHeadingRow
 {
     protected $tableroId;
     protected $eventoId;
+    protected $nombreTablero;
 
-    public function __construct($tableroId, $eventoId)
+    public function __construct($tableroId, $eventoId, $nombreTablero) 
     {
         $this->tableroId = $tableroId;
         $this->eventoId = $eventoId;
+        $this->nombreTablero = $nombreTablero; 
     }
+
 
     public function onRow(Row $row)
     {
@@ -67,13 +70,14 @@ class ConsolidadoImport implements OnEachRow, WithHeadingRow
         }
 
         Consolidado::create([
-            'fecha'          => $fecha,
-            'descripcion'    => $data['descripcion'] ?? null,
-            'feat_business'  => $data['feat_business'] ?? null,
-            'cargar_a'       => $data['cargar_a'] ?? null,
-            'importe'        => $data['importe'] ?? null,
-            'tablero_id'     => $this->tableroId,
-            'evento_id'      => $this->eventoId,
+            'fecha'                => $fecha,
+            'descripcion_tablero' => $data['descripcion'] ?? null,
+            'feat_business_tablero' => $data['feat_business'] ?? null,
+            'cargar_a'             => $data['cargar_a'] ?? null,
+            'importe_tablero'      => $data['importe'] ?? null,
+            'nombre_tablero'       => $this->nombreTablero, 
+            'tablero_id'           => $this->tableroId,
+            'evento_id'            => $this->eventoId,
         ]);
     }
 }

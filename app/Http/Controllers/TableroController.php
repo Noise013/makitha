@@ -44,7 +44,7 @@ class TableroController extends Controller
         ]);
 
         // Importar Excel pasándole tablero_id y evento_id correctos
-        Excel::import(new ConsolidadoImport($tablero->id, $eventoId), $archivo);
+        Excel::import(new ConsolidadoImport($tablero->id, $eventoId, $nombreTablero), $archivo);
 
         return redirect()->route('tableros.datos', ['id' => $tablero->id]);
     }
@@ -55,11 +55,11 @@ class TableroController extends Controller
 
         // Clientes únicos sacados de feat_business, tomando lo que está después del guion
         $clientes = \App\Models\Consolidado::where('tablero_id', $id)
-            ->select('feat_business')
+            ->select('feat_business_tablero')
             ->distinct()
             ->get()
             ->map(function ($item) {
-                if (preg_match('/\-\s*(.+)/', $item->feat_business, $matches)) {
+                if (preg_match('/\-\s*(.+)/', $item->feat_business_tablero, $matches)) {
                     return trim($matches[1]);
                 }
                 return null;
@@ -81,7 +81,7 @@ class TableroController extends Controller
             ->get();
 
         $reales = $consolidado->groupBy(function ($item) {
-            if (preg_match('/\-\s*(.+)/', $item->feat_business, $matches)) {
+            if (preg_match('/\-\s*(.+)/', $item->feat_business_tablero, $matches)) {
                 return trim($matches[1]);
             }
             return null;
@@ -178,11 +178,11 @@ class TableroController extends Controller
         $tablero = Tablero::findOrFail($id);
 
         $clientes = \App\Models\Consolidado::where('tablero_id', $id)
-            ->select('feat_business')
+            ->select('feat_business_tablero')
             ->distinct()
             ->get()
             ->map(function ($item) {
-                if (preg_match('/\-\s*(.+)/', $item->feat_business, $matches)) {
+                if (preg_match('/\-\s*(.+)/', $item->feat_business_tablero, $matches)) {
                     return trim($matches[1]);
                 }
                 return null;
