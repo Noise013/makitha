@@ -52,6 +52,8 @@ class TableroController extends Controller
     public function datos($id)
     {
         $tablero = \App\Models\Tablero::findOrFail($id);
+        $reporte = Evento::find($tablero->evento_id);
+        
 
         // Clientes únicos sacados de feat_business, tomando lo que está después del guion
         $clientes = \App\Models\Consolidado::where('tablero_id', $id)
@@ -95,7 +97,7 @@ class TableroController extends Controller
 
         $realesTotal = $reales->sum();
 
-        return view('creartablerodos', compact('tablero', 'clientes', 'ultimoMes', 'reales', 'realesTotal'));
+        return view('creartablerodos', compact('tablero', 'clientes', 'ultimoMes', 'reales', 'realesTotal', 'reporte'));
     }
     
     public function guardarDatos(Request $request, $id)
@@ -175,6 +177,7 @@ class TableroController extends Controller
     {
         $id = $request->query('id');
         $tablero = Tablero::findOrFail($id);
+        $reporte = $tablero->evento;
 
         $clientes = \App\Models\Consolidado::where('tablero_id', $id)
             ->select('feat_business_tablero')
@@ -254,7 +257,8 @@ class TableroController extends Controller
             'mesDinamicoCalculado',
             'acumuladoNoAlcanzado',
             'accionesATomar',
-            'ultimoMes'
+            'ultimoMes',
+            'reporte'
         ));
     }
 

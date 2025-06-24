@@ -13,8 +13,7 @@
                     <div class="flex items-center justify-between mb-4">
                         <h2 class="text-lg font-semibold">Historial de reportes</h2>
                         
-                        <form action="{{ route('eventos.guardar') }}" method="POST">
-                            @csrf
+                        <form action="{{ route('importar.form', ['evento' => Str::uuid()]) }}" method="GET">
                             <button type="submit" class="btnPrimary">Crear nuevo reporte</button>
                         </form>
                     </div>
@@ -30,7 +29,7 @@
                                 <form action="{{ route('eventos.eliminar', $evento->id) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar este reporte?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-black text-sm px-3 py-1 rounded ml-4">
+                                    <button type="submit" class="btnDelete">
                                         Eliminar
                                     </button>
                                 </form>

@@ -21,18 +21,22 @@
                             </ul>
                         </div>
                     @endif
-                    <form action="{{ route('movimientos.importar', ['evento' => $evento]) }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('movimientos.importar', ['evento' => $evento]) }}" method="POST" enctype="multipart/form-data" class="formReporte">
                         @csrf
 
                         <input type="hidden" name="evento_id" value="{{ $evento }}">
 
-                        <h3>Ingresa tu archivo</h3>
+                        <h3 class="text-lg font-semibold">Ingresa tu archivo</h3>
 
-                        <label for="archivo_excel">Archivo Excel:</label>
-                        <input type="file" name="archivo_excel" required>
+                        <div class="uploadFile">
+                            <label for="archivo_excel">Archivo Excel:</label>
+                            <input type="file" name="archivo_excel" required>
+                        </div>
 
-                        <label for="nombre_archivo">Nombre del archivo:</label>
-                        <input type="text" name="nombre_archivo" id="nombre_archivo" required>
+                        <div class="fileName">
+                            <label for="nombre_archivo">Nombre del archivo:</label>
+                            <input type="text" name="nombre_archivo" id="nombre_archivo" required>
+                        </div>
 
                         <h3>Proyección</h3>
 
@@ -43,13 +47,17 @@
                             ];
                         @endphp
 
-                        @foreach($meses as $mes)
-                            <label for="proyeccion_{{ $mes }}">{{ ucfirst($mes) }}:</label>
-                            <input type="number" name="proyeccion[{{ $mes }}]" step="0.01" required>
-                        @endforeach
+                        <div class="monthContent grid grid-cols-2 gap-4">
+                            @foreach($meses as $mes)
+                                <div class="month">
+                                    <label for="proyeccion_{{ $mes }}">{{ ucfirst($mes) }}:</label>
+                                    <input type="number" name="proyeccion[{{ $mes }}]" step="0.01" required>
+                                </div>
+                            @endforeach
+                        </div>
 
                         <br><br>
-                        <button type="submit">Guardar</button>
+                        <button type="submit" class="btnPrimary">Guardar</button>
                     </form>
                 </div>
             </div>

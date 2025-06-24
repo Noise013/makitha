@@ -15,4 +15,9 @@ class Tablero extends Model
     {
         return $this->hasMany(Consolidado::class, 'tablero_id');
     }
+
+    public function evento()
+    {
+        return $this->belongsTo(Evento::class, 'evento_id');
+    }
 }

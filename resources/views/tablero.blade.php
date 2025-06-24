@@ -28,7 +28,7 @@
                                 <form action="{{ route('tableros.eliminar', $tablero->id) }}" method="POST" onsubmit="return confirm('¿Estás seguro de eliminar este tablero?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-black text-sm px-3 py-1 rounded ml-4">
+                                    <button type="submit" class="btnDelete">
                                         Eliminar
                                     </button>
                                 </form>

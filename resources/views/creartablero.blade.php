@@ -9,28 +9,34 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    <form action="{{ route('tableros.guardar') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('tableros.guardar') }}" method="POST" enctype="multipart/form-data" class="formReporte">
                         @csrf
 
                         {{-- Nombre del tablero --}}
-                        <label for="nombre_tablero">Nombre del tablero:</label>
-                        <input type="text" id="nombre_tablero" name="nombre_tablero" required>
+                        <div class="fileName">
+                            <label for="nombre_tablero">Nombre del tablero:</label>
+                            <input type="text" id="nombre_tablero" name="nombre_tablero" required>
+                        </div>
+                        
 
                         {{-- Subir archivo Excel --}}
-                        <label for="archivo_consolidado">Archivo consolidado:</label>
-                        <input type="file" id="archivo_consolidado" name="archivo_consolidado" required>
+                        <div class="uploadFile">
+                            <label for="archivo_consolidado">Archivo consolidado:</label>
+                            <input type="file" id="archivo_consolidado" name="archivo_consolidado" required>
+                        </div>
 
                         {{-- Seleccionar evento (reporte) --}}
-                       <label for="evento_id">Seleccionar reporte:</label>
-                        <select name="evento_id" id="evento_id" required>
-                            <option value="">-- Elegir un evento --</option>
-                            @foreach ($eventos as $evento)
-                                <option value="{{ $evento->id }}">{{ $evento->nombre_archivo ?? 'Sin nombre' }}</option>
-                            @endforeach
-                        </select>
+                        <div class="uploadFile">
+                            <label for="evento_id">Seleccionar reporte:</label>
+                            <select name="evento_id" id="evento_id" required>
+                                <option value="" selected disabled>-- Elegir un reporte --</option>
+                                @foreach ($eventos as $evento)
+                                    <option value="{{ $evento->id }}">{{ $evento->nombre_archivo ?? 'Sin nombre' }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
-                        <br><br>
-                        <button type="submit">Cargar datos</button>
+                        <button type="submit" class="btnPrimary">Cargar datos</button>
                     </form>
                 </div>
             </div>
