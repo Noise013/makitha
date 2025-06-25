@@ -1,29 +1,13 @@
 Cosas para hacer:
-1) Terminar el formulario de creacion de tabla (funciona, pero ¿a qué costo?) 
-    Me agarra los clientes (milagrosamente) pero me hace mal las cuentas. Eso me pasa por dejar ingeniería.
-    toca modificar todo porque me guarda cualquier cosa. Me quiero matar jajaj :D
-    Fue menos horrible de lo que esperé, parece que funciona.
-    mentira, tengo que borrar todo :D
-    Bueno, lado positivo? las 4 tablas guardan la información, lado negativo: Consolidado no se queda el id, y guarda el nombre en el id de evento
-    Consolidado por algun motivo guarda los movimientos
-    Estoy viendo que es lo que está mal :C
-    
-2) Arreglar el error de la generación del reporte cuando se sale del formulario (también para la tabla)
-    esto va a ser horrible  de arreglar, pero no se puede dejar así.
-    lado positivo, es solo en los reportes, en el tablero parece que no es así :D
 
-3) Agregar botón de eliminar en los reportes y las tablas
-    Y yo me pregunto... ¿por qué no lo pensé antes?
-    Ya elimina los tableros. Ahora queda hacer el eliminar reportes.
-    Ya elimina los reportes. Si no recuerdo mal, al borrar las tablas no se borra el reporte, pero al borrarse el reporte se borran las tablas
-    Lo dejé así, pero se puede cambiar. Lo bueno es que en la base de datos también se borra :D En resumen: FUNCIONA :D
-
-
-4) hacer la vista dinámica para los tableros (estoy en eso D: )
+1) hacer la vista dinámica para los tableros (estoy en eso D: )
     ya la vista dinamica aparece, solo queda poner todos los datos :D --->  es cierto que son más tablas D: 
     Hice las primeras 4 tablas, solo queda agregar lo demás. Estoy empezando a odiar las tablas, pero me salvaron la vida jajaj
     La vista ya quedó :D Faltan los cálculos. 
+    Están los calculos :D solo me falta la tabla de siguiente mes, y no se si haya que hacer otro cálculo nuevo
+    La tabla de siguiente mes era solo mostrar los datos, así que ya está :D
 
+Ahora lo que no sé es si hay otra cosa más para hacer. 
 
 
 

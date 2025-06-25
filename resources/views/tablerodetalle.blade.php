@@ -43,6 +43,7 @@
             <table class="table-auto w-full border border-gray-300 tableReporteTablero">
                 <thead class="bg-gray-100">
                     <tr>
+                        <th class="border px-4 py-2">Cliente</th>
                         <th class="border px-4 py-2">Real</th>
                         <th class="border px-4 py-2">Plan</th>
                         <th class="border px-4 py-2">VS Plan</th>
@@ -60,6 +61,7 @@
                             ];
                         @endphp
                         <tr>
+                            <td class="border px-4 py-2">{{ $cliente }}</td>
                             <td class="border px-4 py-2">{{ number_format($item->real, 2) }}</td>
                             <td class="border px-4 py-2">{{ number_format($item->plan ?? 0, 2) }}</td>
                             <td class="border px-4 py-2">{{ number_format($item->vs_plan ?? 0, 2) }}</td>
@@ -70,7 +72,7 @@
             </table>
         </div>
         {{-- Tabla 3: Siguiente mes --}}
-        <div class="bg-white shadow rounded p-6 mb-10">
+       <div class="bg-white shadow rounded p-6 mb-10">
             <div class="titleResumenReporte">
                 <h3 class="text-lg font-semibold">Siguiente Mes</h3>
             </div>
@@ -83,9 +85,13 @@
                 </thead>
                 <tbody>
                     @foreach ($clientes as $cliente)
+                        @php
+                            $resultado = $acumuladoMesAnterior->firstWhere('cliente', $cliente);
+                            $plan = $mesDinamicoCalculado[$cliente] ?? null;
+                        @endphp
                         <tr>
-                            <td class="border px-4 py-2">—</td>
-                            <td class="border px-4 py-2">—</td>
+                            <td class="border px-4 py-2">{{ number_format($resultado->total ?? 0, 2) }}</td>
+                            <td class="border px-4 py-2">{{ number_format($plan->plan ?? 0, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
