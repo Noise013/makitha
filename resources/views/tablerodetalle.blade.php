@@ -12,73 +12,79 @@
             <p><strong>Reporte:</strong> {{ $reporte->nombre_archivo ?? 'Sin nombre' }}</p>
             <p><strong>Fecha de creación:</strong> {{ $tablero->created_at->format('d-m-Y') }}</p>
         </div>
-
-        {{-- Tabla 1: Acumulado del mes anterior --}}
-        <div class="bg-white shadow rounded p-6 mb-10">
-            <div class="titleResumenReporte">
-                <h3>ACUMULADO MES ANTERIOR</h3>
-            </div>
-            <table class="table-auto w-full border border-gray-300 tableReporteTablero">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="border px-4 py-2">Cliente</th>
-                        <th class="border px-4 py-2">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($acumuladoMesAnterior as $item)
+        <div class="tableResumeTablero flex flex-col md:flex-row gap-6 mb-10">
+            {{-- Tabla 1: Acumulado del mes anterior --}}
+            <div class="w-full md:w-[40%] bg-white shadow rounded p-6 mb-10">
+                <div class="titleResumenReporte">
+                    <h3>ACUMULADO MES ANTERIOR</h3>
+                </div>
+                <table class="table-auto w-full border border-gray-300 tableReporteTablero">
+                    <thead class="bg-gray-100">
                         <tr>
-                            <td class="border px-4 py-2">{{ $item->cliente }}</td>
-                            <td class="border px-4 py-2">{{ number_format($item->total, 2) }}</td>
+                            <th class="border px-4 py-2">Cliente</th>
+                            <th class="border px-4 py-2">Total</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-        {{-- Tabla 2: Mes dinámico --}}
-        <div class="bg-white shadow rounded p-6 mb-10">
-            <div class="titleResumenReporte">
-                <h3 class="text-lg font-semibold">{{ $ultimoMes }}</h3>
+                    </thead>
+                    <tbody>
+                        @foreach ($acumuladoMesAnterior as $item)
+                            <tr>
+                                <td class="border px-4 py-2">{{ $item->cliente }}</td>
+                                <td class="border px-4 py-2">Q. {{ number_format($item->total, 2) }}</td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
-            <table class="table-auto w-full border border-gray-300 tableReporteTablero">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="border px-4 py-2">Cliente</th>
-                        <th class="border px-4 py-2">Real</th>
-                        <th class="border px-4 py-2">Plan</th>
-                        <th class="border px-4 py-2">VS Plan</th>
-                        <th class="border px-4 py-2">%</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($clientes as $cliente)
-                        @php
-                            $item = $mesDinamicoCalculado[$cliente] ?? (object)[
-                                'real' => 0,
-                                'plan' => 0,
-                                'vs_plan' => 0,
-                                'porcentaje' => 0,
-                            ];
-                        @endphp
+            {{-- Tabla 2: Mes dinámico --}}
+            <div class="w-full md:w-[60%] bg-white shadow rounded p-6 mb-10">
+                <div class="titleResumenReporte">
+                    <h3 class="text-lg font-semibold">{{ $ultimoMes }}</h3>
+                </div>
+                <table class="table-auto w-full border border-gray-300 tableReporteTablero">
+                    <thead class="bg-gray-100">
                         <tr>
-                            <td class="border px-4 py-2">{{ $cliente }}</td>
-                            <td class="border px-4 py-2">{{ number_format($item->real, 2) }}</td>
-                            <td class="border px-4 py-2">{{ number_format($item->plan ?? 0, 2) }}</td>
-                            <td class="border px-4 py-2">{{ number_format($item->vs_plan ?? 0, 2) }}</td>
-                            <td class="border px-4 py-2">{{ number_format($item->porcentaje ?? 0, 2) }}%</td>
+                            <th class="border px-4 py-2">Cliente</th>
+                            <th class="border px-4 py-2">Real</th>
+                            <th class="border px-4 py-2">Plan</th>
+                            <th class="border px-4 py-2">VS Plan</th>
+                            <th class="border px-4 py-2">%</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody>
+                        @foreach ($clientes as $cliente)
+                            @php
+                                $item = $mesDinamicoCalculado[$cliente] ?? (object)[
+                                    'real' => 0,
+                                    'plan' => 0,
+                                    'vs_plan' => 0,
+                                    'porcentaje' => 0,
+                                ];
+                            @endphp
+                            <tr>
+                                <td class="border px-4 py-2">{{ $cliente }}</td>
+                                <td class="border px-4 py-2">Q. {{ number_format($item->real, 2) }}</td>
+                                <td class="border px-4 py-2">Q. {{ number_format($item->plan ?? 0, 2) }}</td>
+                                <td class="border px-4 py-2">Q. {{ number_format($item->vs_plan ?? 0, 2) }}</td>
+                                <td class="border px-4 py-2 
+                                    {{ $item->porcentaje >= 0 ? 'text-green-600' : ($item->porcentaje < 0 ? 'text-red-600' : 'text-gray-800') }}">
+                                    {{ number_format($item->porcentaje ?? 0, 2) }}%
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
+        
         {{-- Tabla 3: Siguiente mes --}}
-       <div class="bg-white shadow rounded p-6 mb-10">
+       <div class="tableResumeTablero bg-white shadow rounded p-6 mb-10">
             <div class="titleResumenReporte">
                 <h3 class="text-lg font-semibold">Siguiente Mes</h3>
             </div>
             <table class="table-auto w-full border border-gray-300 mb-10 tableReporteTablero">
                 <thead class="bg-gray-100">
                     <tr>
+                        <th class="border px-4 py-2 text-left">Cliente</th>
                         <th class="border px-4 py-2 text-left">Resultado Acumulado</th>
                         <th class="border px-4 py-2 text-left">Plan</th>
                     </tr>
@@ -90,14 +96,15 @@
                             $plan = $mesDinamicoCalculado[$cliente] ?? null;
                         @endphp
                         <tr>
-                            <td class="border px-4 py-2">{{ number_format($resultado->total ?? 0, 2) }}</td>
-                            <td class="border px-4 py-2">{{ number_format($plan->plan ?? 0, 2) }}</td>
+                            <td class="border px-4 py-2">{{ $cliente }}</td>
+                            <td class="border px-4 py-2">Q. {{ number_format($resultado->total ?? 0, 2) }}</td>
+                            <td class="border px-4 py-2">Q. {{ number_format($plan->plan ?? 0, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        <div class="tableResumeTablero grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
             {{-- Tabla 4: Acumulado no alcanzado --}}
             <div class="bg-white shadow rounded p-6 mb-10">
                 <div class="titleResumenReporte">
@@ -114,7 +121,7 @@
                         @foreach ($acumuladoNoAlcanzado as $item)
                             <tr>
                                 <td class="border px-4 py-2">{{ $item->cliente }}</td>
-                                <td class="border px-4 py-2">{{ number_format($item->resultado_acumulado, 2) }}</td>
+                                <td class="border px-4 py-2">Q. {{ number_format($item->resultado_acumulado, 2) }}</td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -139,7 +146,7 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $item->servicio }}</td>
                                 <td class="border px-4 py-2">{{ $item->propuesta }}</td>
-                                <td class="border px-4 py-2">{{ number_format($item->monto, 2) }}</td>
+                                <td class="border px-4 py-2">Q. {{ number_format($item->monto, 2) }}</td>
                                 <td class="border px-4 py-2">
                                     {{ $item->fecha ? \Carbon\Carbon::parse($item->fecha)->format('d/m/Y') : '-' }}
                                 </td>
