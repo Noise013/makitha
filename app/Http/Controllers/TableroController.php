@@ -231,6 +231,14 @@ class TableroController extends Controller
 
             if ($plan !== null) {
                 $vsPlan = $real - $plan;
+
+                //real dividido presupuesto - 1
+                //if($plan == 0){
+                //    $porcentaje = ($real > 0) ? 100 : 0;
+                //} else{      
+                //    $porcentaje = (($real / $plan) - 1) * 100;
+                //}
+
                 if ($real == 0) {
                     if ($plan > 0) {
                         $porcentaje = -100;
@@ -238,7 +246,7 @@ class TableroController extends Controller
                         $porcentaje = 0;
                     }
                 } else {
-                    $porcentaje = ($vsPlan / $real) * 100;
+                     $porcentaje = ($vsPlan / $real) * 100; 
                 }               
             }
 

@@ -70,7 +70,7 @@ class EventoController extends Controller
                 }
             }
         }
-    
+        
         // Ordenar por mes numérico
         ksort($ejecutadoPorMes);
     

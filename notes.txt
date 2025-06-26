@@ -1,14 +1,9 @@
 Cosas para hacer:
 
-1) hacer la vista dinámica para los tableros (estoy en eso D: )
-    ya la vista dinamica aparece, solo queda poner todos los datos :D --->  es cierto que son más tablas D: 
-    Hice las primeras 4 tablas, solo queda agregar lo demás. Estoy empezando a odiar las tablas, pero me salvaron la vida jajaj
-    La vista ya quedó :D Faltan los cálculos. 
-    Están los calculos :D solo me falta la tabla de siguiente mes, y no se si haya que hacer otro cálculo nuevo
-    La tabla de siguiente mes era solo mostrar los datos, así que ya está :D
-
-Ahora lo que no sé es si hay otra cosa más para hacer. 
-
+1) Modificar la vista dinámica de las tablas y las cuentas.
+    hay una tabla que no va.
+    No sé por qué toda la llamada se sintió como un regaño :'C 
+    Era como mis profesores cuando entregaba mal una tarea
 
 
 Por favor git hoy no te hagas el gracioso, sabes que tus bromitas me suben la presión. :( 

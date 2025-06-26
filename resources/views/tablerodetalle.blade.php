@@ -13,10 +13,10 @@
             <p><strong>Fecha de creación:</strong> {{ $tablero->created_at->format('d-m-Y') }}</p>
         </div>
         <div class="tableResumeTablero flex flex-col md:flex-row gap-6 mb-10">
-            {{-- Tabla 1: Acumulado del mes anterior --}}
+            {{-- Tabla 1: Acumulado Real del mes anterior --}}
             <div class="w-full md:w-[40%] bg-white shadow rounded p-6 mb-10">
                 <div class="titleResumenReporte">
-                    <h3>ACUMULADO MES ANTERIOR</h3>
+                    <h3>ACUMULADO REAL MES ANTERIOR</h3>
                 </div>
                 <table class="table-auto w-full border border-gray-300 tableReporteTablero">
                     <thead class="bg-gray-100">
@@ -29,7 +29,7 @@
                         @foreach ($acumuladoMesAnterior as $item)
                             <tr>
                                 <td class="border px-4 py-2">{{ $item->cliente }}</td>
-                                <td class="border px-4 py-2">Q. {{ number_format($item->total, 2) }}</td>
+                                <td class="border px-4 py-2">Q. {{ number_format($item->total, 2) }}</td>   {{-- Se supone que acá tiene que ir la suma de todos los acumulados de los meses anteriores --}}
                             </tr>
                         @endforeach
                     </tbody>
@@ -76,17 +76,17 @@
             </div>
         </div>
         
-        {{-- Tabla 3: Siguiente mes --}}
+        {{-- Tabla 3: Siguiente mes // Resultado Acumulado hasta la fecha--}}
        <div class="tableResumeTablero bg-white shadow rounded p-6 mb-10">
             <div class="titleResumenReporte">
-                <h3 class="text-lg font-semibold">Siguiente Mes</h3>
+                <h3 class="text-lg font-semibold">Resultado Acumulado hasta la fecha</h3>
             </div>
             <table class="table-auto w-full border border-gray-300 mb-10 tableReporteTablero">
                 <thead class="bg-gray-100">
                     <tr>
                         <th class="border px-4 py-2 text-left">Cliente</th>
                         <th class="border px-4 py-2 text-left">Resultado Acumulado</th>
-                        <th class="border px-4 py-2 text-left">Plan</th>
+                        <th class="border px-4 py-2 text-left">Plan Siguiente Mes</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -97,15 +97,16 @@
                         @endphp
                         <tr>
                             <td class="border px-4 py-2">{{ $cliente }}</td>
-                            <td class="border px-4 py-2">Q. {{ number_format($resultado->total ?? 0, 2) }}</td>
+                            <td class="border px-4 py-2">Q. {{ number_format($resultado->total ?? 0, 2) }}</td>   {{-- acá tenemos que sumar el resultado acumulado de la tabla 1  + el vs plan del mes actual --}}
                             <td class="border px-4 py-2">Q. {{ number_format($plan->plan ?? 0, 2) }}</td>
                         </tr>
                     @endforeach
                 </tbody>
             </table>
         </div>
+        <!--
         <div class="tableResumeTablero grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-            {{-- Tabla 4: Acumulado no alcanzado --}}
+            {{-- Tabla 4: Acumulado no alcanzado / hay que sacarlo --}}
             <div class="bg-white shadow rounded p-6 mb-10">
                 <div class="titleResumenReporte">
                     <h3 class="text-lg font-semibold">Acumulado no alcanzado</h3>
@@ -126,7 +127,7 @@
                         @endforeach
                     </tbody>
                 </table>
-            </div>
+            </div>-->
             {{-- Tabla 5: Acciones a tomar --}}
             <div class="bg-white shadow rounded p-6 mb-10">
                 <div class="titleResumenReporte">
@@ -254,3 +255,5 @@
         </div>
     </div>
 </x-app-layout>
+
+                            
