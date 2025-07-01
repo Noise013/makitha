@@ -67,7 +67,7 @@
                                 <td class="border px-4 py-2">Q. {{ number_format($item->vs_plan ?? 0, 2) }}</td>
                                 <td class="border px-4 py-2 
                                     {{ $item->porcentaje >= 0 ? 'text-green-600' : ($item->porcentaje < 0 ? 'text-red-600' : 'text-gray-800') }}">
-                                    {{ number_format($item->porcentaje ?? 0, 2) }}%
+                                    {{ intval($item->porcentaje ?? 0) }}%
                                 </td>
                             </tr>
                         @endforeach

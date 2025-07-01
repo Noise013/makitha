@@ -230,24 +230,24 @@ class TableroController extends Controller
             $porcentaje = null;
 
             if ($plan !== null) {
-                $vsPlan = $real - $plan;
-
-                //real dividido presupuesto - 1
-                //if($plan == 0){
-                //    $porcentaje = ($real > 0) ? 100 : 0;
-                //} else{      
-                //    $porcentaje = (($real / $plan) - 1) * 100;
-                //}
-
-                if ($real == 0) {
-                    if ($plan > 0) {
+                $vsPlan = round($real - $plan);
+            
+                if ($plan == 0) {
+                    // Si el plan es = 0 entonces no se puede dividir 
+                    if ($real > 0) {
+                        $porcentaje = 100;
+                    } elseif ($real < 0) {
                         $porcentaje = -100;
                     } else {
                         $porcentaje = 0;
                     }
                 } else {
-                     $porcentaje = ($real / $plan) - 1; 
-                }               
+                    // Plan distinto de 0, se puede dividir sin problemas :D 
+                    $porcentaje = round((($real / $plan) - 1) * 100);
+                }
+            } else {
+                $vsPlan = 0;
+                $porcentaje = 0;
             }
 
             $mesDinamicoCalculado[$cliente] = (object)[
