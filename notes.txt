@@ -7,3 +7,10 @@ Cosas para hacer:
 
 
 Por favor git hoy no te hagas el gracioso, sabes que tus bromitas me suben la presión. :( 
+
+
+
+
+Para lo visual:
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+npm run dev

@@ -246,7 +246,7 @@ class TableroController extends Controller
                         $porcentaje = 0;
                     }
                 } else {
-                     $porcentaje = ($vsPlan / $real) * 100; 
+                     $porcentaje = ($real / $plan) - 1; 
                 }               
             }
 
