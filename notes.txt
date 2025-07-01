@@ -1,10 +1,6 @@
 Cosas para hacer:
 
-1) Modificar la vista dinámica de las tablas y las cuentas.
-    hay una tabla que no va.
-    No sé por qué toda la llamada se sintió como un regaño :'C 
-    Era como mis profesores cuando entregaba mal una tarea
-
+1) mostar el real en el tablerodetalle
 
 Por favor git hoy no te hagas el gracioso, sabes que tus bromitas me suben la presión. :( 
 

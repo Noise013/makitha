@@ -14,7 +14,7 @@
         </div>
         <div class="tableResumeTablero flex flex-col md:flex-row gap-6 mb-10">
             {{-- Tabla 1: Acumulado Real del mes anterior --}}
-            <div class="w-full md:w-[40%] bg-white shadow rounded p-6 mb-10">
+            <div class="w-full md:w-[60%] bg-white shadow rounded p-6 mb-10">
                 <div class="titleResumenReporte">
                     <h3>ACUMULADO REAL MES ANTERIOR</h3>
                 </div>
@@ -22,14 +22,16 @@
                     <thead class="bg-gray-100">
                         <tr>
                             <th class="border px-4 py-2">Cliente</th>
-                            <th class="border px-4 py-2">Total</th>
+                            <th class="border px-4 py-2">Resultado acumulado</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($acumuladoMesAnterior as $item)
+                        @foreach ($clientes as $cliente)
                             <tr>
-                                <td class="border px-4 py-2">{{ $item->cliente }}</td>
-                                <td class="border px-4 py-2">Q. {{ number_format($item->total, 2) }}</td>   {{-- Se supone que acá tiene que ir la suma de todos los acumulados de los meses anteriores --}}
+                                <td class="border px-4 py-2">{{ $cliente }}</td>
+                                <td class="border px-4 py-2">
+                                     {{ number_format($acumuladoAnterior[$cliente] ?? 0, 2) }}
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -97,7 +99,9 @@
                         @endphp
                         <tr>
                             <td class="border px-4 py-2">{{ $cliente }}</td>
-                            <td class="border px-4 py-2">Q. {{ number_format($resultado->total ?? 0, 2) }}</td>   {{-- acá tenemos que sumar el resultado acumulado de la tabla 1  + el vs plan del mes actual --}}
+                            <td class="border px-4 py-2">
+                                {{ number_format($acumuladoTotal[$cliente] ?? 0, 2) }}
+                            </td>
                             <td class="border px-4 py-2">Q. {{ number_format($plan->plan ?? 0, 2) }}</td>
                         </tr>
                     @endforeach

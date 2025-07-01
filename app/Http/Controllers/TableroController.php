@@ -13,7 +13,7 @@ use App\Models\AcumuladoMesAnterior;
 use App\Models\MesDinamico;
 use App\Models\AcumuladoNoAlcanzado;
 use App\Models\AccionATomar;
-
+use Illuminate\Support\Str;
 
 
 
@@ -82,11 +82,15 @@ class TableroController extends Controller
 
         foreach ($clientes as $cliente) {
             $total = Consolidado::where('tablero_id', $id)
-                ->where('cargar_a', 'like', '%FEE%') // contiene la palabra FEE
                 ->get()
                 ->filter(function ($item) use ($cliente) {
-                    if (preg_match('/\-\s*(.+)/', $item->feat_business_tablero, $matches)) {
-                        return trim($matches[1]) === $cliente;
+                    // Extraer partes de feat_business_tablero
+                    if (preg_match('/(.+?)\s*-\s*(.+)/', $item->feat_business_tablero, $matches)) {
+                        $parteAntesDelGuion = trim($matches[1]);  // puede contener "FEE"
+                        $parteDespuesDelGuion = trim($matches[2]); // cliente
+
+                        return Str::contains(Str::upper($parteAntesDelGuion), 'FEE') &&
+                            $parteDespuesDelGuion === $cliente;
                     }
                     return false;
                 })
@@ -103,14 +107,14 @@ class TableroController extends Controller
     public function guardarDatos(Request $request, $id)
     {
         $request->validate([
-            'acumulado_mes_anterior' => 'required|array',
-            'acumulado_mes_anterior.*.total' => 'nullable|numeric',
+            //'acumulado_mes_anterior' => 'required|array',
+            //'acumulado_mes_anterior.*.total' => 'nullable|numeric',
 
             'mes_dinamico' => 'required|array',
             'mes_dinamico.*.plan' => 'nullable|numeric',
 
-            'acumulado_no_alcanzado' => 'required|array',
-            'acumulado_no_alcanzado.*.resultado' => 'nullable|numeric',
+            //'acumulado_no_alcanzado' => 'required|array',
+            //'acumulado_no_alcanzado.*.resultado' => 'nullable|numeric',
 
             'acciones_a_tomar' => 'required|array',
             'acciones_a_tomar.*.servicio' => 'nullable|string|max:255',
@@ -120,12 +124,12 @@ class TableroController extends Controller
         ]);
 
         // Acumulado Mes Anterior
-        foreach ($request->input('acumulado_mes_anterior', []) as $cliente => $data) {
-            AcumuladoMesAnterior::updateOrCreate(
-                ['tablero_id' => $id, 'cliente' => $cliente],
-                ['total' => $data['total']]
-            );
-        }
+        //foreach ($request->input('acumulado_mes_anterior', []) as $cliente => $data) {
+        //    AcumuladoMesAnterior::updateOrCreate(
+        //        ['tablero_id' => $id, 'cliente' => $cliente],
+        //        ['total' => $data['total']]
+        //    );
+        //}
 
         // Mes Dinámico
         foreach ($request->input('mes_dinamico', []) as $cliente => $data) {
@@ -142,12 +146,12 @@ class TableroController extends Controller
         }
 
         // Acumulado No Alcanzado
-        foreach ($request->input('acumulado_no_alcanzado', []) as $cliente => $data) {
-            AcumuladoNoAlcanzado::updateOrCreate(
-                ['tablero_id' => $id, 'cliente' => $cliente],
-                ['resultado_acumulado' => $data['resultado']]
-            );
-        }
+       // foreach ($request->input('acumulado_no_alcanzado', []) as $cliente => $data) {
+         //   AcumuladoNoAlcanzado::updateOrCreate(
+           //     ['tablero_id' => $id, 'cliente' => $cliente],
+           //     ['resultado_acumulado' => $data['resultado']]
+          //  );
+       // }
 
         // Acciones a Tomar
         foreach ($request->input('acciones_a_tomar', []) as $cliente => $accion) {
@@ -197,15 +201,17 @@ class TableroController extends Controller
         $reales = collect();
         foreach ($clientes as $cliente) {
             $total = \App\Models\Consolidado::where('tablero_id', $id)
-                ->where('cargar_a', 'like', '%FEE%')
                 ->get()
                 ->filter(function ($item) use ($cliente) {
-                    if (preg_match('/\-\s*(.+)/', $item->feat_business_tablero, $matches)) {
-                        return trim($matches[1]) === $cliente;
+                    if (preg_match('/(.+?)\s*-\s*(.+)/', $item->feat_business_tablero, $matches)) {
+                        $antesDelGuion = Str::upper(trim($matches[1]));
+                        $despuesDelGuion = trim($matches[2]);
+
+                        return Str::contains($antesDelGuion, 'FEE') && $despuesDelGuion === $cliente;
                     }
                     return false;
                 })
-                ->sum('importe_tablero'); 
+                ->sum('importe_tablero');
             $reales[$cliente] = $total ?: 0;
         }
 
@@ -258,6 +264,43 @@ class TableroController extends Controller
             ];
         }
 
+        //Agarro los tableros anteriores al actual ordenados por fecha
+        $tablerosAnteriores = Tablero::where('evento_id', $tablero->evento_id)
+            ->where('id', '!=', $id)
+            ->where('created_at', '<', $tablero->created_at)
+            ->orderBy('created_at')
+            ->get();
+
+        
+        //calculo acumulado del mes anterior (real - plan por cliente)
+        $acumuladoAnterior = [];
+        foreach ($clientes as $cliente) {
+            $totalVsPlanAnterior = 0;
+
+            foreach ($tablerosAnteriores as $tableroAnterior) {
+                $dato = MesDinamico::where('tablero_id', $tableroAnterior->id)
+                    ->where('cliente', $cliente)
+                    ->first();
+
+                if ($dato) {
+                    $real = $dato->real ?? 0;
+                    $plan = $dato->plan ?? 0;
+                    $totalVsPlanAnterior += ($real - $plan);
+                }
+            }
+
+            $acumuladoAnterior[$cliente] = $totalVsPlanAnterior;
+        }
+
+        $acumuladoTotal = [];
+
+        foreach ($clientes as $cliente) {
+            $anterior = $acumuladoAnterior[$cliente] ?? 0;
+            $vsPlanActual = $mesDinamicoCalculado[$cliente]->vs_plan ?? 0;
+
+            $acumuladoTotal[$cliente] = $anterior + $vsPlanActual;
+        }
+
         return view('tablerodetalle', compact(
             'tablero',
             'clientes',
@@ -266,7 +309,9 @@ class TableroController extends Controller
             'acumuladoNoAlcanzado',
             'accionesATomar',
             'ultimoMes',
-            'reporte'
+            'reporte',
+            'acumuladoAnterior',
+            'acumuladoTotal'
         ));
     }
 

@@ -9,7 +9,7 @@
         <div class="bg-white shadow rounded p-6">
             <form method="POST" action="{{ route('tableros.guardarDatos', ['id' => $tablero->id]) }}">
                 @csrf
-
+<!-- 
                 {{-- Primera tabla --}}
                 <h3 class="text-lg font-semibold mb-4">Acumulado del mes anterior</h3>
                 <table class="table-auto w-full border border-gray-300 mb-10">
@@ -34,7 +34,7 @@
                         @endforeach
                     </tbody>
                 </table>
-
+-->
                 {{-- Segunda tabla --}}
                 <h3 class="text-lg font-semibold mb-4">{{ $ultimoMes }}</h3>
                 <table class="table-auto w-full border border-gray-300 mb-10">
@@ -68,7 +68,7 @@
                         @endforeach
                     </tbody>
                 </table>
-
+<!-- 
                 {{-- Tercera tabla --}}
                 <h3 class="text-lg font-semibold mb-4">Acumulado no alcanzado</h3>
                 <table class="table-auto w-full border border-gray-300 mb-10">
@@ -93,12 +93,13 @@
                         @endforeach
                     </tbody>
                 </table>
-
+-->
                 {{-- Cuarta tabla --}}
                 <h3 class="text-lg font-semibold mb-4">Acciones a Tomar</h3>
                 <table class="table-auto w-full border border-gray-300 mb-10">
                     <thead>
                         <tr class="bg-gray-100">
+                            <th class="border px-4 py-2 text-left">Cliente</th>
                             <th class="border px-4 py-2 text-left">Servicio</th>
                             <th class="border px-4 py-2 text-left">Propuesta</th>
                             <th class="border px-4 py-2 text-left">Monto</th>
@@ -108,6 +109,7 @@
                     <tbody>
                         @foreach ($clientes as $cliente)
                             <tr>
+                                <td class="border px-4 py-2">{{ $cliente }}</td>
                                 <td class="border px-4 py-2">
                                     <input type="text" 
                                            name="acciones_a_tomar[{{ $cliente }}][servicio]" 

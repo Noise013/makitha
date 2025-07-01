@@ -54,6 +54,30 @@ class ConsolidadoImport implements OnEachRow, WithHeadingRow
         // DEBUG para ver claves normalizadas y valores
         // dd($data);
 
+        // Mapa de encabezados alternativos
+        $mapa = [
+            'descripcion_tablero'     => ['descripcion'],
+            'feat_business_tablero'   => ['feat_business'],
+            'cargar_a'                => ['cargar_a', 'a_donde_se_carga', 'se_cargo_a', 'cargar_a_', 'se_cargo_a_', 'a_donde_se_cargo'],
+            'importe_tablero'         => ['importe'],
+        ];
+
+        // Asignar valores mapeando con los sinónimos
+        $valores = [];
+        foreach ($mapa as $campoFinal => $posiblesNombres) {
+            foreach ($posiblesNombres as $alias) {
+                if (isset($data[$alias])) {
+                    $valores[$campoFinal] = $data[$alias];
+                    break;
+                }
+            }
+
+            // Si no se encontró ninguna coincidencia, asignar null
+            if (!isset($valores[$campoFinal])) {
+                $valores[$campoFinal] = null;
+            }
+        }
+
         $fechaOriginal = $data['fecha'] ?? null;
         $fecha = null;
 
@@ -69,15 +93,14 @@ class ConsolidadoImport implements OnEachRow, WithHeadingRow
             }
         }
 
-        Consolidado::create([
-            'fecha'                => $fecha,
-            'descripcion_tablero' => $data['descripcion'] ?? null,
-            'feat_business_tablero' => $data['feat_business'] ?? null,
-            'cargar_a'             => $data['cargar_a'] ?? null,
-            'importe_tablero'      => $data['importe'] ?? null,
-            'nombre_tablero'       => $this->nombreTablero, 
-            'tablero_id'           => $this->tableroId,
-            'evento_id'            => $this->eventoId,
+         Consolidado::create([
+            'fecha'                  => $fecha,
+            'descripcion_tablero'   => $valores['descripcion_tablero'],
+            'feat_business_tablero' => $valores['feat_business_tablero'],
+            'importe_tablero'       => $valores['importe_tablero'],
+            'nombre_tablero'        => $this->nombreTablero,
+            'tablero_id'            => $this->tableroId,
+            'evento_id'             => $this->eventoId,
         ]);
     }
 }
