@@ -1,6 +1,8 @@
 Cosas para hacer:
 
-1) mostar el real en el tablerodetalle
+1) calculos? hice las cuentas a mano de lo que tenía ayer y parece funcionar
+    ya me estaba agarrando la cabeza, horrorizada porque no sé hacer cuentas básicas
+    que mal me hizo dejar ing. 
 
 Por favor git hoy no te hagas el gracioso, sabes que tus bromitas me suben la presión. :( 
 

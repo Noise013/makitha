@@ -40,6 +40,7 @@
                 <table class="table-auto w-full border border-gray-300 mb-10">
                     <thead>
                         <tr class="bg-gray-100">
+                            <th class="border px-4 py-2 text-left">Cliente</th>
                             <th class="border px-4 py-2 text-left">Real</th>
                             <th class="border px-4 py-2 text-left">Plan</th>
                             <th class="border px-4 py-2 text-left">VS Plan</th>
@@ -49,6 +50,7 @@
                     <tbody>
                         @foreach ($clientes as $cliente)
                             <tr>
+                                <td class="border px-4 py-2">{{ $cliente }}</td>
                                 <td class="border px-4 py-2">
                                     {{ number_format($reales[$cliente] ?? 0, 2) }}
                                     <input type="hidden" 
