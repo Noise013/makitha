@@ -62,7 +62,7 @@
                                         name="mes_dinamico[{{ $cliente }}][plan]" 
                                         step="0.01" 
                                         class="w-full border rounded p-1"
-                                        value="{{ old('mes_dinamico.' . $cliente . '.plan') }}" />
+                                        value="{{ old('mes_dinamico.' . $cliente . '.plan') }}" required/>
                                 </td>
                                 <td class="border px-4 py-2">—</td>
                                 <td class="border px-4 py-2">—</td>
@@ -98,6 +98,7 @@
 -->
                 {{-- Cuarta tabla --}}
                 <h3 class="text-lg font-semibold mb-4">Acciones a Tomar</h3>
+                <span>De no tener los datos, por favor ponga 0 y guiones</span>
                 <table class="table-auto w-full border border-gray-300 mb-10">
                     <thead>
                         <tr class="bg-gray-100">
@@ -116,26 +117,26 @@
                                     <input type="text" 
                                            name="acciones_a_tomar[{{ $cliente }}][servicio]" 
                                            class="w-full border rounded p-1"
-                                           value="{{ old('acciones_a_tomar.' . $cliente . '.servicio') }}" />
+                                           value="{{ old('acciones_a_tomar.' . $cliente . '.servicio') }}" required />
                                 </td>
                                 <td class="border px-4 py-2">
                                     <input type="text" 
                                            name="acciones_a_tomar[{{ $cliente }}][propuesta]" 
                                            class="w-full border rounded p-1"
-                                           value="{{ old('acciones_a_tomar.' . $cliente . '.propuesta') }}" />
+                                           value="{{ old('acciones_a_tomar.' . $cliente . '.propuesta') }}" required />
                                 </td>
                                 <td class="border px-4 py-2">
                                     <input type="number" 
                                            step="0.01" 
                                            name="acciones_a_tomar[{{ $cliente }}][monto]" 
                                            class="w-full border rounded p-1"
-                                           value="{{ old('acciones_a_tomar.' . $cliente . '.monto') }}" />
+                                           value="{{ old('acciones_a_tomar.' . $cliente . '.monto') }}" required/>
                                 </td>
                                 <td class="border px-4 py-2">
                                     <input type="date" 
                                            name="acciones_a_tomar[{{ $cliente }}][fecha]" 
                                            class="w-full border rounded p-1"
-                                           value="{{ old('acciones_a_tomar.' . $cliente . '.fecha') }}" />
+                                           value="{{ old('acciones_a_tomar.' . $cliente . '.fecha') }}" min="{{ date('Y-m-d') }}" required/>
                                 </td>
                             </tr>
                         @endforeach
@@ -152,3 +153,20 @@
         </div>
     </div>
 </x-app-layout>
+@if(session('success'))
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        Swal.fire({
+            toast: true,
+            position: 'bottom-end',
+            icon: 'success',
+            title: '{{ session('success') }}',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            background: '#ECFDF5',
+            color: '#065F46'
+        });
+    });
+</script>
+@endif

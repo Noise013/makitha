@@ -26,7 +26,7 @@
                                         <span class="fechaReporte">Creado el {{ $evento->created_at->format('d-m-Y') }}</span>
                                     </a>
                                 </div>
-                                <form action="{{ route('eventos.eliminar', $evento->id) }}" method="POST" onsubmit="return confirm('¿Seguro que querés eliminar este reporte?');">
+                                <form action="{{ route('eventos.eliminar', $evento->id) }}" method="POST" class="form-eliminar">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btnDelete">
@@ -60,3 +60,29 @@
     });
 </script>
 @endif
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.form-eliminar').forEach(function(form) {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "Esta acción no se puede deshacer.",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Sí, eliminar',
+                    cancelButtonText: 'Cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        form.submit();
+                    }
+                });
+            });
+        });
+    });
+</script>

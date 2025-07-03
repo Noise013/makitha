@@ -1,10 +1,31 @@
 Cosas para hacer:
 
-1) calculos? hice las cuentas a mano de lo que tenía ayer y parece funcionar
-    ya me estaba agarrando la cabeza, horrorizada porque no sé hacer cuentas básicas
-    que mal me hizo dejar ing. 
+1) completar las tablas del tablerodetalle.blade 
+    (te estoy dejando para el final porque sé que me vas a dar problemas D:)
+    Y si, me das problemas
 
-Por favor git hoy no te hagas el gracioso, sabes que tus bromitas me suben la presión. :( 
+2) verificar en reportes que entre reportes no se repita el nombre
+    fUNCIONA pero me pone mensaje acá. 
+    Ta ya vi por qué hay mensaje jajaja que despistada
+
+3) verificar en tableros que entre tableros no se repita el nombre
+    Ok... CREO que está. 
+    SIII FUNCIONAAAA
+    PONE EL MENSAJEEEEEEE VAMOOOOOOOOOO
+
+4) hacer todos los campos de creartablerodos.blade sean obligatorios y que la fecha mínima sea la de hoy.
+    FUNCIONA :D
+    Al final ponerme la música de megaman x me ayuda más de lo que pensé JAJAJAJ
+
+5) agregar alertas que no se vean feas (¿cómo? magia, ni idea.)
+    Al menos aparecen mensajitos cuando los nombres están repetidos. 
+    AAAA me está llevando más tiempo del que pensé D:
+    Listo, el de la creación de tablero quedó, me faltan los de eliminar
+    pa, que problemas me dan los de eliminar lpm
+    SIEMPRE EL PROBLEMA ES EN TABLERO, NUNCA EN REPORTE, SOLO TABLERO.
+    AHORA SIIII VAMOOOOOO
+
+
 
 
 
@@ -12,3 +33,6 @@ Por favor git hoy no te hagas el gracioso, sabes que tus bromitas me suben la pr
 Para lo visual:
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 npm run dev
+
+desp: 
+php artisan serve

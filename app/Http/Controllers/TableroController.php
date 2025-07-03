@@ -28,9 +28,11 @@ class TableroController extends Controller
     public function guardar(Request $request)
     {
         $request->validate([
-            'nombre_tablero' => 'required|string|max:255',
+            'nombre_tablero' => 'required|string|max:255|unique:tableros,nombre_tablero',
             'archivo_consolidado' => 'required|file|mimes:xlsx,xls,csv',
             'evento_id' => 'required|exists:eventos,id',
+        ], [
+            'nombre_tablero.unique' => 'Ya existe un tablero con ese nombre. Por favor ingrese otro.',
         ]);
 
         $nombreTablero = $request->input('nombre_tablero');
@@ -111,16 +113,16 @@ class TableroController extends Controller
             //'acumulado_mes_anterior.*.total' => 'nullable|numeric',
 
             'mes_dinamico' => 'required|array',
-            'mes_dinamico.*.plan' => 'nullable|numeric',
+            'mes_dinamico.*.plan' => 'required|numeric',
 
             //'acumulado_no_alcanzado' => 'required|array',
             //'acumulado_no_alcanzado.*.resultado' => 'nullable|numeric',
 
             'acciones_a_tomar' => 'required|array',
-            'acciones_a_tomar.*.servicio' => 'nullable|string|max:255',
-            'acciones_a_tomar.*.propuesta' => 'nullable|string|max:255',
-            'acciones_a_tomar.*.monto' => 'nullable|numeric',
-            'acciones_a_tomar.*.fecha' => 'nullable|date',
+            'acciones_a_tomar.*.servicio' => 'required|string|max:255',
+            'acciones_a_tomar.*.propuesta' => 'required|string|max:255',
+            'acciones_a_tomar.*.monto' => 'required|numeric',
+            'acciones_a_tomar.*.fecha' => 'required|date',
         ]);
 
         // Acumulado Mes Anterior
@@ -236,7 +238,7 @@ class TableroController extends Controller
             $porcentaje = null;
 
             if ($plan !== null) {
-                $vsPlan = round($real - $plan);
+                $vsPlan = $real - $plan;
             
                 if ($plan == 0) {
                     // Si el plan es = 0 entonces no se puede dividir 

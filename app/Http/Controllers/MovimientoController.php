@@ -17,9 +17,11 @@ class MovimientoController extends Controller
         $request->validate([
             'archivo_excel' => 'required|file|mimes:xlsx,xls,csv',
             'evento_id' => 'required|string', // ya no 'exists:eventos,id'
-            'nombre_archivo' => 'required|string|max:255',
+            'nombre_archivo' => 'required|string|max:255|unique:eventos,nombre_archivo',
             'proyeccion' => 'required|array',
             'proyeccion.*' => 'required|numeric',
+        ], [
+            'nombre_archivo.unique' => 'Ya existe un reporte con ese nombre. Por favor ingrese otro.',
         ]);
 
         $eventoId = $request->input('evento_id');
