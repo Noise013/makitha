@@ -3,6 +3,9 @@ Cosas para hacer:
 1) completar las tablas del tablerodetalle.blade 
     (te estoy dejando para el final porque sé que me vas a dar problemas D:)
     Y si, me das problemas
+    Y qué problemas lpm
+    como te odio meta a la fecha. Te detesto.
+    
 
 2) verificar en reportes que entre reportes no se repita el nombre
     fUNCIONA pero me pone mensaje acá. 

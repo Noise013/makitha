@@ -171,19 +171,17 @@
                 </div>
                 <div class="mb-6">
                     <div class="flex items-center space-x-8 h-[400px]">
-                        @php
-                        // Por ahora simulo el porcentaje 
-                        $porcentajeFinal = -75; 
-                        @endphp
                         {{-- Porcentaje a la izquierda --}}
-                        <span class="text-2xl font-semibold text-blue-600 w-16 text-right" style="color: {{ $porcentajeFinal > 0 ? 'green' : ($porcentajeFinal < 0 ? 'red' : 'gray')}}">{{ $porcentajeFinal > 0 ? '+' : '' }}{{ $porcentajeFinal }}%</span> {{-- {{ $porcentajeFinal }} --}}
+                        <span class="text-2xl font-semibold w-16 text-right" 
+                            style="color: {{ $porcentajeAnual > 0 ? 'green' : ($porcentajeAnual < 0 ? 'red' : 'gray') }}">
+                            {{ $porcentajeAnual > 0 ? '+' : '' }}{{ $porcentajeAnual }}%
+                        </span>
 
                         {{-- Barra vertical en el centro --}}
-
                         <div class="relative w-[55px] h-full bg-gray-200 rounded-full overflow-hidden">
                             <div 
                                 class="absolute bottom-0 percentBar left-0 w-full" 
-                                style="height: {{ abs($porcentajeFinal) }}%; background-color: {{ $porcentajeFinal > 0 ? 'green' : ($porcentajeFinal < 0 ? 'red' : 'gray') }}">
+                                style="height: {{ min(abs($porcentajeAnual), 100) }}%; background-color: {{ $porcentajeAnual > 0 ? 'green' : ($porcentajeAnual < 0 ? 'red' : 'gray') }}">
                             </div>
                         </div>
 
@@ -193,15 +191,27 @@
                                 <tbody>
                                     <tr>
                                         <td class="border px-4 py-2">META ANUAL</td>
-                                        <td class="border px-4 py-2">—</td>
+                                        <td class="border px-4 py-2">
+                                            Q.{{ fmod($totalProyeccion, 1) == 0 
+                                                ? number_format($totalProyeccion, 0, '.', ',') 
+                                                : number_format($totalProyeccion, 2, '.', ',') }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="border px-4 py-2">EJECUTADO A LA FECHA</td>
-                                        <td class="border px-4 py-2">—</td>
+                                        <td class="border px-4 py-2">
+                                            Q.{{ fmod($ejecutadoAFecha, 1) == 0 
+                                                ? number_format($ejecutadoAFecha, 0, '.', ',') 
+                                                : number_format($ejecutadoAFecha, 2, '.', ',') }}
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td class="border px-4 py-2">DIFERENCIA</td>
-                                        <td class="border px-4 py-2">—</td>
+                                        <td class="border px-4 py-2">
+                                            Q.{{ fmod($diferenciaAnual, 1) == 0 
+                                                ? number_format($diferenciaAnual, 0, '.', ',') 
+                                                : number_format($diferenciaAnual, 2, '.', ',') }}
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -217,45 +227,53 @@
                 </div>
 
                 <div class="flex items-center space-x-8 h-[400px]">
-                        @php
-                        // Por ahora simulo el porcentaje 
-                        $porcentajeFinal = 85; 
-                        @endphp
-                        {{-- Porcentaje a la izquierda --}}
-                        <span class="text-2xl font-semibold text-blue-600 w-16 text-right" style="color: {{ $porcentajeFinal > 0 ? 'green' : ($porcentajeFinal < 0 ? 'red' : 'gray')}}">{{ $porcentajeFinal > 0 ? '+' : '' }}{{ $porcentajeFinal }}%</span> {{-- {{ $porcentajeFinal }} --}}
+                    {{-- Porcentaje a la izquierda --}}
+                    <span class="text-2xl font-semibold w-16 text-right" 
+                        style="color: {{ $porcentajeAFecha > 0 ? 'green' : ($porcentajeAFecha < 0 ? 'red' : 'gray') }}">
+                        {{ $porcentajeAFecha > 0 ? '+' : '' }}{{ $porcentajeAFecha }}%
+                    </span>
 
-                        {{-- Barra vertical en el centro --}}
-
-                        <div class="relative w-[55px] h-full bg-gray-200 rounded-full overflow-hidden">
-                            <div 
-                                class="absolute bottom-0 percentBar left-0 w-full" 
-                                style="height: {{ abs($porcentajeFinal) }}%; background-color: {{ $porcentajeFinal > 0 ? 'green' : ($porcentajeFinal < 0 ? 'red' : 'gray') }}">
-                            </div>
-                        </div>
-
-                        {{-- Tabla a la derecha --}}
-                        <div class="w-full">
-                            <table class="table-auto w-full border border-gray-300">
-                                <tbody>
-                                    <tr>
-                                        <td class="border px-4 py-2">META ENE-MAY</td>
-                                        <td class="border px-4 py-2">—</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border px-4 py-2">EJECUTADO A LA FECHA</td>
-                                        <td class="border px-4 py-2">—</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="border px-4 py-2">DIFERENCIA</td>
-                                        <td class="border px-4 py-2">—</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                    {{-- Barra vertical en el centro --}}
+                    <div class="relative w-[55px] h-full bg-gray-200 rounded-full overflow-hidden">
+                        <div 
+                            class="absolute bottom-0 percentBar left-0 w-full" 
+                            style="height: {{ min(abs($porcentajeAFecha), 100) }}%; background-color: {{ $porcentajeAFecha > 0 ? 'green' : ($porcentajeAFecha < 0 ? 'red' : 'gray') }};">
                         </div>
                     </div>
 
+                    {{-- Tabla a la derecha --}}
+                    <div class="w-full">
+                        <table class="table-auto w-full border border-gray-300">
+                            <tbody>
+                                <tr>
+                                    <td class="border px-4 py-2">META A LA FECHA</td>
+                                    <td class="border px-4 py-2">
+                                        Q.{{ fmod($metaAFecha, 1) == 0 
+                                            ? number_format($metaAFecha, 0, '.', ',') 
+                                            : number_format($metaAFecha, 2, '.', ',') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">EJECUTADO A LA FECHA</td>
+                                    <td class="border px-4 py-2">
+                                        Q.{{ fmod($ejecutadoAFecha, 1) == 0 
+                                            ? number_format($ejecutadoAFecha, 0, '.', ',') 
+                                            : number_format($ejecutadoAFecha, 2, '.', ',') }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="border px-4 py-2">DIFERENCIA</td>
+                                    <td class="border px-4 py-2">
+                                        Q.{{ fmod($diferenciaAFecha, 1) == 0 
+                                            ? number_format($diferenciaAFecha, 0, '.', ',') 
+                                            : number_format($diferenciaAFecha, 2, '.', ',') }}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-
         </div>
     </div>
 </x-app-layout>

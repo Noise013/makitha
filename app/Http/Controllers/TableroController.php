@@ -14,6 +14,9 @@ use App\Models\MesDinamico;
 use App\Models\AcumuladoNoAlcanzado;
 use App\Models\AccionATomar;
 use Illuminate\Support\Str;
+use App\Models\Proyeccion;
+use App\Models\Movimiento;
+
 
 
 
@@ -303,6 +306,60 @@ class TableroController extends Controller
             $acumuladoTotal[$cliente] = $anterior + $vsPlanActual;
         }
 
+        //calculo ejecución anual y a la fecha
+        $proyecciones = Proyeccion::where('evento_id', $tablero->evento_id)->get();
+        $totalProyeccion = $proyecciones->sum('proyeccion');
+
+        $movimientos = Movimiento::where('evento', $tablero->evento_id)->get();
+
+        $ejecutadoPorMes = array_fill(1, 12, 0);
+        foreach ($movimientos as $mov) {
+            $valor = $mov->feat_business;
+            if ($valor && is_string($valor)) {
+                preg_match('/\](.*?)\-/', $valor, $matches);
+                $descripcion = isset($matches[1]) ? trim($matches[1]) : '';
+                if (stripos($descripcion, 'FEE') !== false && $mov->importe > 0) {
+                    $mes = date('n', strtotime($mov->fecha)); // 1–12
+                    $ejecutadoPorMes[$mes] += $mov->importe;
+                }
+            }
+        }
+
+        $mesDelTablero = Carbon::parse($tablero->created_at)->month;
+        $ejecutadoAFecha = array_sum(array_slice($ejecutadoPorMes, 0, $mesDelTablero, true));
+
+
+        $mesesMap = [
+            'enero' => 1, 'febrero' => 2, 'marzo' => 3, 'abril' => 4,
+            'mayo' => 5, 'junio' => 6, 'julio' => 7, 'agosto' => 8,
+            'septiembre' => 9, 'octubre' => 10, 'noviembre' => 11, 'diciembre' => 12,
+        ];
+
+        $metaPorMes = [];
+        foreach ($proyecciones as $p) {
+            $mesKey = strtolower(trim($p->mes));
+            if (isset($mesesMap[$mesKey])) {
+                $num = $mesesMap[$mesKey];
+                if (!isset($metaPorMes[$num])) {
+                    $metaPorMes[$num] = $p->proyeccion; // toma solo la primera que encuentra
+                }
+            }
+        }
+
+
+        $mesHastaTablero = $ultimaFecha ? Carbon::parse($ultimaFecha)->month : now()->month;  
+        $metaAFecha = 0;
+        for ($i = 1; $i <= $mesHastaTablero; $i++) {
+            $metaAFecha += $metaPorMes[$i] ?? 0;
+        }
+
+        $diferenciaAnual = $ejecutadoAFecha - $totalProyeccion;
+        $diferenciaAFecha = $ejecutadoAFecha - $metaAFecha;
+
+        $porcentajeAnual = $totalProyeccion > 0 ? round(($ejecutadoAFecha - $totalProyeccion) / $totalProyeccion * 100) : 0;
+        $porcentajeAFecha = $metaAFecha > 0 ? round(($ejecutadoAFecha - $metaAFecha) / $metaAFecha * 100) : 0;
+
+
         return view('tablerodetalle', compact(
             'tablero',
             'clientes',
@@ -313,7 +370,14 @@ class TableroController extends Controller
             'ultimoMes',
             'reporte',
             'acumuladoAnterior',
-            'acumuladoTotal'
+            'acumuladoTotal',
+            'totalProyeccion',
+            'ejecutadoAFecha',
+            'diferenciaAnual',
+            'metaAFecha',
+            'diferenciaAFecha',
+            'porcentajeAnual',
+            'porcentajeAFecha'
         ));
     }
 
